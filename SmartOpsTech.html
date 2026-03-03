@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOpsTech | AI-Powered Control Systems Engineering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #06090F;
+            --bg-elevated: #0C1019;
+            --bg-card: #111620;
+            --bg-card-hover: #161D2A;
+            --surface: #1A2233;
+            --border: #1E2A3D;
+            --border-accent: #2A3A52;
+            --text-primary: #E8ECF1;
+            --text-secondary: #8899AD;
+            --text-muted: #566882;
+            --accent: #00D4FF;
+            --accent-dim: rgba(0, 212, 255, 0.08);
+            --accent-glow: rgba(0, 212, 255, 0.15);
+            --accent-secondary: #6C63FF;
+            --green: #22C55E;
+            --green-dim: rgba(34, 197, 94, 0.1);
+            --amber: #F59E0B;
+            --gradient-hero: linear-gradient(165deg, #06090F 0%, #0A1628 40%, #0E1A30 70%, #06090F 100%);
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Instrument Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── CUSTOM CURSOR GLOW ─── */
+        .cursor-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+
+        /* ─── GRID BACKGROUND ─── */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── UTILITY ─── */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            clip: rect(0 0 0 0);
+            overflow: hidden;
+        }
+
+        /* ─── NAVIGATION ─── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 24px;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .nav.scrolled {
+            background: rgba(6, 9, 15, 0.85);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            background: var(--accent);
+            border-radius: 3px;
+            opacity: 0.2;
+        }
+
+        .nav-logo-icon svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo-text span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.25s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: var(--accent-dim);
+        }
+
+        .nav-links a.nav-cta {
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-weight: 600;
+            padding: 8px 20px;
+        }
+
+        .nav-links a.nav-cta:hover {
+            box-shadow: 0 0 24px rgba(0,212,255,0.3);
+        }
+
+        .nav-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 24px 80px;
+            background: var(--gradient-hero);
+            overflow: hidden;
+        }
+
+        .hero-noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.35;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        .hero-orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+            top: -200px;
+            right: -100px;
+        }
+
+        .hero-orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(108,99,255,0.06) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1240px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px 6px 8px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.2s forwards;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,212,255,0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0,212,255,0); }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.9s var(--ease-out-expo) 0.35s forwards;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--accent) 0%, #6C63FF 50%, var(--accent) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 36px;
+            max-width: 540px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.9s var(--ease-out-expo) 0.5s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.9s var(--ease-out-expo) 0.65s forwards;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s var(--ease-out-expo);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 0 0 rgba(0,212,255,0);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 32px rgba(0,212,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-accent);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .btn-arrow {
+            transition: transform 0.3s;
+        }
+
+        .btn:hover .btn-arrow {
+            transform: translateX(3px);
+        }
+
+        /* ─── HERO VISUAL (DATA TERMINAL) ─── */
+        .hero-visual {
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: fadeUp 1s var(--ease-out-expo) 0.8s forwards;
+        }
+
+        .terminal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(0,212,255,0.05),
+                0 20px 60px rgba(0,0,0,0.4),
+                0 0 100px rgba(0,212,255,0.03);
+        }
+
+        .terminal-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 18px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #FF5F57; }
+        .terminal-dot.yellow { background: #FFBD2E; }
+        .terminal-dot.green { background: #28CA41; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.9;
+            min-height: 280px;
+        }
+
+        .terminal-line {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(-8px);
+        }
+
+        .terminal-line.visible {
+            animation: termFade 0.4s var(--ease-out-expo) forwards;
+        }
+
+        @keyframes termFade {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .t-prompt { color: var(--accent); }
+        .t-cmd { color: var(--text-primary); }
+        .t-comment { color: var(--text-muted); }
+        .t-string { color: var(--green); }
+        .t-number { color: var(--amber); }
+        .t-keyword { color: var(--accent-secondary); }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ─── SECTION STYLING ─── */
+        .section {
+            position: relative;
+            padding: 120px 24px;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 16px;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ─── EXPERTISE ─── */
+        .expertise-section {
+            background: var(--bg-primary);
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .expertise-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            transition: all 0.4s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expertise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .expertise-card:hover {
+            border-color: var(--border-accent);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+        }
+
+        .expertise-card:hover::before {
+            opacity: 1;
+        }
+
+        .expertise-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(0,212,255,0.1);
+        }
+
+        .expertise-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .expertise-list {
+            list-style: none;
+        }
+
+        .expertise-list li {
+            padding: 6px 0;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .expertise-list li::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        /* ─── SERVICES ─── */
+        .services-section {
+            background: var(--bg-elevated);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            border-color: rgba(0,212,255,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,212,255,0.05);
+            transform: translateY(-4px);
+        }
+
+        .service-card-top {
+            padding: 32px 28px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .service-card-top::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 28px;
+            right: 28px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
+        }
+
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .service-price {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 12px 0 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .service-price-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .service-card-body {
+            padding: 28px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 28px;
+            flex: 1;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .service-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--green-dim);
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .service-check svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .service-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ─── TECHNOLOGIES ─── */
+        .tech-section {
+            background: var(--bg-primary);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .tech-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .tech-category:hover {
+            border-color: var(--border-accent);
+        }
+
+        .tech-category h3 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-category h3::before {
+            content: '';
+            width: 3px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .tech-tags li {
+            padding: 5px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            transition: all 0.25s;
+        }
+
+        .tech-tags li:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        /* ─── CASE STUDIES / METRICS ─── */
+        .results-section {
+            background: var(--bg-elevated);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            transition: all 0.4s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-3px);
+        }
+
+        .result-industry {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .result-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .result-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .result-metrics {
+            display: flex;
+            gap: 32px;
+        }
+
+        .result-metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-metric-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .result-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* ─── ABOUT ─── */
+        .about-section {
+            background: var(--bg-primary);
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 1.05rem;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .credential-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .credential-item:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .credential-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: var(--green-dim);
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .industries-wrap {
+            margin-top: 32px;
+        }
+
+        .industries-wrap h3 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .industry-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .industry-tag {
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.25s;
+        }
+
+        .industry-tag:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 72px 24px 32px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 16px;
+            max-width: 320px;
+        }
+
+        .footer h4 {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-links .contact-item {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-stagger > .reveal {
+            transition-delay: calc(var(--i, 0) * 80ms);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-desc { margin-left: auto; margin-right: auto; }
+            .hero-actions { justify-content: center; }
+            .hero-visual { max-width: 520px; margin: 0 auto; }
+            .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .results-grid { grid-template-columns: 1fr; }
+            .about-layout { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: rgba(6,9,15,0.97);
+                backdrop-filter: blur(20px);
+                padding: 24px;
+                border-bottom: 1px solid var(--border);
+                gap: 4px;
+            }
+            .nav-mobile-toggle { display: block; }
+            .section { padding: 80px 16px; }
+            .expertise-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .credentials-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .result-metrics { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ─── NAVIGATION ─── -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#home" class="nav-logo">
+            <div class="nav-logo-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8L8 3L13 8L8 13Z" fill="#00D4FF" />
+                </svg>
+            </div>
+            <span class="nav-logo-text">Smart<span>Ops</span>Tech</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#expertise">Expertise</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#technologies">Technologies</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="nav-mobile-toggle" id="navToggle" aria-label="Toggle menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+    <div class="hero-noise"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-content">
+        <div class="hero-left">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                AI-Powered Industrial Intelligence
+            </div>
+            <h1>Control Systems<br/>Engineering with<br/><span class="gradient-text">Machine Intelligence</span></h1>
+            <p class="hero-desc">We design, implement, and optimize intelligent control systems that merge classical control theory with cutting-edge AI — delivering measurable performance for modern manufacturing.</p>
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-primary">
+                    Explore Services
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </a>
+                <a href="#contact" class="btn btn-ghost">Schedule Consultation</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">smartops_controller.py</span>
+                </div>
+                <div class="terminal-body" id="terminalBody"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── EXPERTISE ─── -->
+<section class="section expertise-section" id="expertise">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-label">Core Capabilities</div>
+            <h2 class="section-title">Our Core Expertise</h2>
+            <p class="section-desc">Specialized engineering at the intersection of control systems and artificial intelligence</p>
+        </div>
+        <div class="expertise-grid reveal-stagger">
+            <div class="expertise-card reveal" style="--i:0">
+                <div class="expertise-icon">&#127919;</div>
+                <h3>Advanced Control Systems</h3>
+                <ul class="expertise-list">
+                    <li>PID Controller Design &amp; Tuning</li>
+                    <li>Model Predictive Control (MPC)</li>
+                    <li>Adaptive &amp; Fuzzy Logic Control</li>
+                    <li>State-Space Control Design</li>
+                    <li>Multi-Variable Control Systems</li>
+                    <li>Cascaded &amp; Feedforward Control</li>
+                </ul>
+            </div>
+            <div class="expertise-card reveal" style="--i:1">
+                <div class="expertise-icon">&#129302;</div>
+                <h3>Industrial AI &amp; ML</h3>
+                <ul class="expertise-list">
+                    <li>Predictive Maintenance Models</li>
+                    <li>Neural Network Process Optimization</li>
+                    <li>Anomaly Detection Systems</li>
+                    <li>Computer Vision Quality Control</li>
+                    <li>Reinforcement Learning for Control</li>
+                    <li>Time-Series Forecasting</li>
+                </ul>
+            </div>
+            <div class="expertise-card reveal" style="--i:2">
+                <div class="expertise-icon">&#128295;</div>
+                <h3>Systems Integration</h3>
+                <ul class="expertise-list">
+                    <li>SCADA/HMI Development</li>
+                    <li>PLC Programming (Siemens, Rockwell, Schneider)</li>
+                    <li>DCS Configuration &amp; Optimization</li>
+                    <li>OPC UA / Modbus / MQTT Integration</li>
+                    <li>Edge AI Computing Deployment</li>
+                    <li>Digital Twin Development</li>
+                </ul>
+            </div>
+            <div class="expertise-card reveal" style="--i:3">
+                <div class="expertise-icon">&#128202;</div>
+                <h3>Data Analytics</h3>
+                <ul class="expertise-list">
+                    <li>Real-Time Process Monitoring</li>
+                    <li>Control Loop Performance Assessment</li>
+                    <li>Energy Optimization Algorithms</li>
+                    <li>Statistical Process Control (SPC)</li>
+                    <li>Production Optimization</li>
+                    <li>KPI Dashboard Development</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="section services-section" id="services">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-label">Professional Services</div>
+            <h2 class="section-title">Engineering Solutions</h2>
+            <p class="section-desc">Comprehensive solutions tailored to your industrial needs</p>
+        </div>
+        <div class="services-grid reveal-stagger">
+            <div class="service-card reveal" style="--i:0">
+                <div class="service-card-top">
+                    <h3>Control Systems Audit &amp; AI Integration</h3>
+                    <div class="service-price">From £2,500</div>
+                    <p class="service-price-desc">Comprehensive analysis &amp; optimization roadmap</p>
+                </div>
+                <div class="service-card-body">
+                    <ul class="service-features">
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Complete control loop performance analysis</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>PID tuning optimization review</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>AI/ML opportunity identification</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>System architecture assessment</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>ROI projections &amp; implementation roadmap</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>3-month post-implementation support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Request Audit</a>
+                </div>
+            </div>
+            <div class="service-card reveal" style="--i:1">
+                <div class="service-card-top">
+                    <h3>AI-Driven Control System Design</h3>
+                    <div class="service-price">From £5,000</div>
+                    <p class="service-price-desc">Custom intelligent control solutions</p>
+                </div>
+                <div class="service-card-body">
+                    <ul class="service-features">
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>System modeling &amp; simulation</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Advanced controller design (MPC/Adaptive)</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>AI model development &amp; training</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>SCADA/HMI interface design</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>PLC/DCS programming &amp; commissioning</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>6-month optimization support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Start Project</a>
+                </div>
+            </div>
+            <div class="service-card reveal" style="--i:2">
+                <div class="service-card-top">
+                    <h3>Control Systems &amp; AI Certification Training</h3>
+                    <div class="service-price">£1,500<span style="font-size:0.9rem;font-weight:500;color:var(--text-muted)">/person</span></div>
+                    <p class="service-price-desc">5-day intensive professional development</p>
+                </div>
+                <div class="service-card-body">
+                    <ul class="service-features">
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Control Theory Fundamentals</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>PID Tuning Masterclass</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Machine Learning for Process Control</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>SCADA/PLC Practical Labs</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Industry-recognized certification</li>
+                        <li><span class="service-check"><svg viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>Course materials &amp; software licenses</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Enroll Team</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TECHNOLOGIES ─── -->
+<section class="section tech-section" id="technologies">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-label">Tech Stack</div>
+            <h2 class="section-title">Technologies &amp; Platforms</h2>
+            <p class="section-desc">Industry-leading tools and frameworks we leverage</p>
+        </div>
+        <div class="tech-grid reveal-stagger">
+            <div class="tech-category reveal" style="--i:0">
+                <h3>Control Engineering</h3>
+                <ul class="tech-tags">
+                    <li>MATLAB/Simulink</li><li>LabVIEW</li><li>Python Control</li><li>GNU Octave</li><li>Scilab/Xcos</li>
+                </ul>
+            </div>
+            <div class="tech-category reveal" style="--i:1">
+                <h3>AI/ML Frameworks</h3>
+                <ul class="tech-tags">
+                    <li>TensorFlow/Keras</li><li>PyTorch</li><li>scikit-learn</li><li>XGBoost</li><li>OpenCV</li>
+                </ul>
+            </div>
+            <div class="tech-category reveal" style="--i:2">
+                <h3>Industrial Platforms</h3>
+                <ul class="tech-tags">
+                    <li>Siemens TIA Portal</li><li>Rockwell Studio 5000</li><li>Schneider EcoStruxure</li><li>ABB AC 800M</li><li>Wonderware</li>
+                </ul>
+            </div>
+            <div class="tech-category reveal" style="--i:3">
+                <h3>Data &amp; Analytics</h3>
+                <ul class="tech-tags">
+                    <li>InfluxDB</li><li>Grafana</li><li>Apache Kafka</li><li>Elasticsearch</li><li>PowerBI</li>
+                </ul>
+            </div>
+            <div class="tech-category reveal" style="--i:4">
+                <h3>Edge Computing</h3>
+                <ul class="tech-tags">
+                    <li>NVIDIA Jetson</li><li>Raspberry Pi Industrial</li><li>Siemens IOT2050</li><li>AWS IoT Greengrass</li><li>Azure IoT Edge</li>
+                </ul>
+            </div>
+            <div class="tech-category reveal" style="--i:5">
+                <h3>Protocols &amp; Standards</h3>
+                <ul class="tech-tags">
+                    <li>OPC UA</li><li>Modbus TCP/RTU</li><li>MQTT/AMQP</li><li>Ethernet/IP</li><li>PROFINET</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── RESULTS ─── -->
+<section class="section results-section" id="results">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-label">Case Studies</div>
+            <h2 class="section-title">Proven Results</h2>
+            <p class="section-desc">Real-world performance improvements across industries</p>
+        </div>
+        <div class="results-grid reveal-stagger">
+            <div class="result-card reveal" style="--i:0">
+                <div class="result-industry">Chemical Manufacturing</div>
+                <h3>Reactor Temperature Stabilization</h3>
+                <p class="result-desc">Implemented cascade PID with ML-based feedforward control to resolve inconsistent reactor temperature causing quality issues.</p>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="-67">0</span>
+                        <span class="result-metric-label">Temperature variance reduction</span>
+                    </div>
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="98.5" data-suffix="%">0</span>
+                        <span class="result-metric-label">Product quality consistency</span>
+                    </div>
+                </div>
+            </div>
+            <div class="result-card reveal" style="--i:1">
+                <div class="result-industry">Food &amp; Beverage</div>
+                <h3>Pasteurization Energy Optimization</h3>
+                <p class="result-desc">Model Predictive Control with energy optimization reduced consumption significantly across pasteurization lines.</p>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="-34">0</span>
+                        <span class="result-metric-label">Energy consumption reduction</span>
+                    </div>
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-prefix="£" data-count="47" data-suffix="K">0</span>
+                        <span class="result-metric-label">Annual savings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="result-card reveal" style="--i:2">
+                <div class="result-industry">Automotive Components</div>
+                <h3>Predictive Maintenance System</h3>
+                <p class="result-desc">AI-powered predictive maintenance eliminated unexpected equipment failures and production loss events.</p>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="-89">0</span>
+                        <span class="result-metric-label">Unplanned downtime reduction</span>
+                    </div>
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="15">0</span>
+                        <span class="result-metric-label">Critical failures prevented/yr</span>
+                    </div>
+                </div>
+            </div>
+            <div class="result-card reveal" style="--i:3">
+                <div class="result-industry">Water Treatment</div>
+                <h3>Multi-Variable Process Automation</h3>
+                <p class="result-desc">Automated multi-variable control with real-time optimization replaced manual processes reducing chemical waste.</p>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="-41">0</span>
+                        <span class="result-metric-label">Chemical usage reduction</span>
+                    </div>
+                    <div class="result-metric">
+                        <span class="result-metric-value" data-count="99.8" data-suffix="%">0</span>
+                        <span class="result-metric-label">Regulatory compliance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="section about-section" id="about">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-label">About Us</div>
+            <h2 class="section-title">About SmartOpsTech</h2>
+            <p class="section-desc">Engineering excellence backed by expertise and credentials</p>
+        </div>
+        <div class="about-layout">
+            <div class="about-text reveal">
+                <p>SmartOpsTech is a specialised control systems and AI engineering consultancy serving industrial and manufacturing clients across the UK and Europe. Led by certified automation engineers with advanced degrees in control systems and artificial intelligence, we bring deep technical expertise to every project.</p>
+                <p>From PID optimization to neural network-assisted model predictive control, we bridge classical engineering with modern AI to deliver quantifiable improvements in efficiency, quality, and uptime.</p>
+                <div class="industries-wrap">
+                    <h3>Industries Served</h3>
+                    <div class="industry-tags">
+                        <span class="industry-tag">Chemical &amp; Petrochemical</span>
+                        <span class="industry-tag">Food &amp; Beverage</span>
+                        <span class="industry-tag">Pharmaceutical</span>
+                        <span class="industry-tag">Automotive</span>
+                        <span class="industry-tag">Water Treatment</span>
+                        <span class="industry-tag">Energy &amp; Utilities</span>
+                        <span class="industry-tag">Manufacturing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal" style="--i:1">
+                <h3 style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:20px;">Our Credentials</h3>
+                <div class="credentials-grid">
+                    <div class="credential-item">
+                        <span class="credential-check"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>
+                        ISA Certified Automation Professional (CAP)
+                    </div>
+                    <div class="credential-item">
+                        <span class="credential-check"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>
+                        Siemens Certified Automation Engineer
+                    </div>
+                    <div class="credential-item">
+                        <span class="credential-check"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>
+                        Rockwell Automation Professional
+                    </div>
+                    <div class="credential-item">
+                        <span class="credential-check"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" stroke="#22C55E" stroke-width="2"><path d="M2 5l2 2 4-4"/></svg></span>
+                        TensorFlow Developer Certificate
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer" id="contact">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#home" class="nav-logo" style="margin-bottom:8px;">
+                    <div class="nav-logo-icon">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8L8 3L13 8L8 13Z" fill="#00D4FF" /></svg>
+                    </div>
+                    <span class="nav-logo-text">Smart<span>Ops</span>Tech</span>
+                </a>
+                <p>Transforming industrial operations through intelligent automation and advanced control strategies.</p>
+            </div>
+            <div>
+                <h4>Services</h4>
+                <ul class="footer-links">
+                    <li><a href="#services">Control Systems Audit</a></li>
+                    <li><a href="#services">AI Integration</a></li>
+                    <li><a href="#services">System Design</a></li>
+                    <li><a href="#services">Professional Training</a></li>
+                    <li><a href="#services">Optimization Services</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li class="contact-item">Juliet Uzoeshi</li>
+                    <li class="contact-item">+44 (0) 7859 914 811</li>
+                    <li><a href="mailto:juliet@smartopstech.co.uk">juliet@smartopstech.co.uk</a></li>
+                    <li class="contact-item">4 Widecombe Court, Arundel Close</li>
+                    <li class="contact-item">Chesterfield S41 8NT, UK</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#results">Case Studies</a></li>
+                    <li><a href="#technologies">Technologies</a></li>
+                    <li><a href="/blog">Technical Blog</a></li>
+                    <li><a href="/white-papers">White Papers</a></li>
+                    <li><a href="/careers">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2025 SmartOpsTech. All rights reserved.</span>
+            <span><a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms of Service</a></span>
+        </div>
+    </div>
+</footer>
+
+<script>
+(function() {
+    'use strict';
+
+    // ─── CURSOR GLOW ───
+    const glow = document.getElementById('cursorGlow');
+    let mouseX = -500, mouseY = -500;
+    let glowX = -500, glowY = -500;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateGlow() {
+        glowX += (mouseX - glowX) * 0.08;
+        glowY += (mouseY - glowY) * 0.08;
+        glow.style.left = glowX + 'px';
+        glow.style.top = glowY + 'px';
+        requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+
+    // ─── NAV SCROLL ───
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        nav.classList.toggle('scrolled', y > 40);
+        lastScroll = y;
+    }, { passive: true });
+
+    // ─── MOBILE NAV ───
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // ─── TERMINAL ANIMATION ───
+    const terminalLines = [
+        { prompt: '>>>', cmd: ' ', comment: '# SmartOpsTech — ProcessIQ Engine' },
+        { prompt: '>>>', cmd: 'from', rest: ' smartops.ai <span class="t-keyword">import</span> NeuralMPC' },
+        { prompt: '>>>', cmd: 'from', rest: ' smartops.control <span class="t-keyword">import</span> CascadePID' },
+        { prompt: '', cmd: '' },
+        { prompt: '>>>', cmd: 'controller', rest: ' = NeuralMPC(' },
+        { prompt: '...', cmd: '    model', rest: '=<span class="t-string">"reactor_thermal_v3"</span>,' },
+        { prompt: '...', cmd: '    horizon', rest: '=<span class="t-number">24</span>,' },
+        { prompt: '...', cmd: '    constraints', rest: '=<span class="t-string">"safety_envelope"</span>' },
+        { prompt: '...', cmd: ')' },
+        { prompt: '', cmd: '' },
+        { prompt: '>>>', cmd: 'result', rest: ' = controller.optimize()' },
+        { prompt: '<span class="t-string">✓</span>', cmd: ' Yield:', rest: ' <span class="t-number">+5.8%</span>  Variance: <span class="t-number">-67%</span>  Status: <span class="t-string">OPTIMAL</span>' },
+    ];
+
+    const termBody = document.getElementById('terminalBody');
+    let lineIndex = 0;
+
+    function renderTerminalLine() {
+        if (lineIndex >= terminalLines.length) {
+            // Add cursor at end
+            const cursorSpan = document.createElement('span');
+            cursorSpan.className = 'terminal-cursor';
+            termBody.lastChild.querySelector('.t-cmd, .t-comment')?.appendChild(cursorSpan) 
+                || termBody.lastChild.appendChild(cursorSpan);
+            return;
+        }
+
+        const line = terminalLines[lineIndex];
+        const div = document.createElement('div');
+        div.className = 'terminal-line';
+
+        let html = '';
+        if (line.prompt) html += `<span class="t-prompt">${line.prompt}</span>`;
+        if (line.comment) {
+            html += `<span class="t-comment">${line.comment}</span>`;
+        } else if (line.cmd) {
+            html += `<span class="t-cmd">${line.cmd}</span>`;
+            if (line.rest) html += `<span class="t-cmd">${line.rest}</span>`;
+        }
+
+        div.innerHTML = html || '&nbsp;';
+        termBody.appendChild(div);
+
+        requestAnimationFrame(() => {
+            div.classList.add('visible');
+        });
+
+        lineIndex++;
+        setTimeout(renderTerminalLine, 120 + Math.random() * 100);
+    }
+
+    // Start terminal after hero loads
+    setTimeout(renderTerminalLine, 1200);
+
+    // ─── SCROLL REVEAL ───
+    const reveals = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // ─── ANIMATED COUNTERS ───
+    const metricValues = document.querySelectorAll('.result-metric-value[data-count]');
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    metricValues.forEach(el => counterObserver.observe(el));
+
+    function animateCounter(el) {
+        const target = parseFloat(el.dataset.count);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '%';
+        const duration = 1600;
+        const start = performance.now();
+        const isNegative = target < 0;
+        const absTarget = Math.abs(target);
+        const hasDecimal = absTarget % 1 !== 0;
+
+        function update(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = absTarget * eased;
+
+            let display = hasDecimal ? current.toFixed(1) : Math.round(current).toString();
+            el.textContent = prefix + (isNegative ? '-' : '') + display + suffix;
+
+            if (progress < 1) requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    // ─── SMOOTH ANCHOR SCROLLING ───
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                const offset = 80;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    });
+
+})();
+</script>
+</body>
+</html>
