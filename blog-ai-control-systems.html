@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Above the loop: where AI fits in an industrial control system — SmartOpsTech</title>
+    <meta name="description" content="A working engineer's view on where machine intelligence belongs in a plant — and where it absolutely does not. From the PID at the bottom of the stack to the recommendation engine sitting above it.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #F6F2EA;
+            --paper-deep: #EDE6D6;
+            --paper-ivory: #FBF8F2;
+            --surface: #FFFFFF;
+            --ink: #0E1217;
+            --ink-soft: #2A323D;
+            --ink-mid: #5A6471;
+            --ink-light: #8A9099;
+            --line: #E2DBC9;
+            --line-strong: #C9C0AC;
+            --teal: #0F4C5C;
+            --teal-deep: #0A3540;
+            --teal-soft: rgba(15, 76, 92, 0.07);
+            --teal-line: rgba(15, 76, 92, 0.18);
+            --gold: #B08940;
+            --gold-soft: rgba(176, 137, 64, 0.1);
+            --rust: #A04A2A;
+            --moss: #4A6A3F;
+            --font-display: 'Fraunces', 'Times New Roman', serif;
+            --font-body: 'Inter Tight', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 100;
+            opacity: 0.35; mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+        }
+        ::selection { background: var(--teal); color: var(--paper-ivory); }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; }
+
+        /* ─── NAV ─── */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: all 0.4s var(--ease); padding: 20px 40px; }
+        .nav.scrolled { background: rgba(246, 242, 234, 0.85); backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1); border-bottom: 1px solid var(--line); padding: 14px 40px; }
+        .nav-inner { max-width: 1320px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--ink); }
+        .logo-mark { display: inline-block; width: 26px; height: 26px; position: relative; top: 3px; }
+        .logo em { font-style: italic; font-weight: 500; color: var(--teal); }
+        .nav-links { display: flex; list-style: none; gap: 4px; align-items: center; }
+        .nav-links a { padding: 10px 16px; font-size: 0.85rem; font-weight: 500; color: var(--ink-soft); border-radius: 999px; transition: all 0.25s var(--ease); }
+        .nav-links a:hover { color: var(--teal); background: var(--teal-soft); }
+        .nav-links a.active { color: var(--teal); background: var(--teal-soft); }
+        .nav-cta { margin-left: 12px; padding: 10px 22px !important; background: var(--ink) !important; color: var(--paper-ivory) !important; border-radius: 999px; transition: all 0.3s var(--ease) !important; }
+        .nav-cta:hover { background: var(--teal) !important; transform: translateY(-1px); }
+        .nav-toggle { display: none; background: none; border: none; padding: 8px; color: var(--ink); }
+
+        /* ─── ARTICLE HEADER ─── */
+        .article-header {
+            padding: 160px 40px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .article-header::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background-image:
+                radial-gradient(circle at 85% 20%, rgba(176, 137, 64, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 5% 90%, rgba(15, 76, 92, 0.05) 0%, transparent 60%);
+        }
+        .article-inner { max-width: 780px; margin: 0 auto; position: relative; z-index: 2; }
+        .breadcrumb {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.18em;
+            color: var(--teal); margin-bottom: 36px;
+        }
+        .breadcrumb a { color: var(--ink-mid); }
+        .breadcrumb a:hover { color: var(--teal); }
+        .breadcrumb-line { width: 28px; height: 1px; background: var(--teal); opacity: 0.5; }
+        .article-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--gold);
+            margin-bottom: 28px;
+        }
+        h1.article-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: var(--ink);
+            margin-bottom: 32px;
+        }
+        h1.article-title em {
+            font-style: italic; color: var(--teal);
+            font-variation-settings: 'opsz' 144, 'SOFT' 50;
+            position: relative;
+        }
+        h1.article-title em::after {
+            content: ''; position: absolute;
+            left: 0; right: 0; bottom: 2px; height: 5px;
+            background: var(--gold); opacity: 0.25; border-radius: 2px;
+        }
+        .dek {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 300;
+            line-height: 1.45;
+            color: var(--ink-soft);
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .article-meta {
+            display: flex;
+            gap: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-mid);
+        }
+        .article-meta span:not(:last-child)::after {
+            content: '·'; margin-left: 24px; opacity: 0.5; color: var(--ink-light);
+        }
+
+        /* ─── ARTICLE BODY ─── */
+        .article-body {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 40px 100px;
+        }
+        .article-body > p,
+        .article-body > h2,
+        .article-body > h3,
+        .article-body > ul,
+        .article-body > ol,
+        .article-body > blockquote,
+        .article-body > .callout {
+            margin-bottom: 1.6em;
+        }
+        .article-body p {
+            font-size: 1.12rem;
+            line-height: 1.75;
+            color: var(--ink);
+        }
+        .article-body p.lead {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--ink);
+            margin-bottom: 2.4em;
+        }
+        .article-body p.lead::first-letter {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 4rem;
+            float: left;
+            line-height: 0.85;
+            padding-right: 14px;
+            padding-top: 8px;
+            color: var(--teal);
+            font-variation-settings: 'opsz' 144;
+        }
+        .article-body h2 {
+            font-family: var(--font-display);
+            font-size: 1.85rem;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-top: 2.4em;
+        }
+        .article-body h2::before {
+            content: '';
+            display: block;
+            width: 32px; height: 2px;
+            background: var(--gold);
+            margin-bottom: 18px;
+        }
+        .article-body h2 em { font-style: italic; color: var(--teal); font-variation-settings: 'opsz' 96, 'SOFT' 50; }
+        .article-body h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 500;
+            line-height: 1.3;
+            color: var(--ink);
+            margin-top: 2em;
+        }
+        .article-body h3 em { font-style: italic; color: var(--teal); }
+
+        .article-body ul, .article-body ol {
+            padding-left: 1.6em;
+        }
+        .article-body li {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--ink);
+            margin-bottom: 0.6em;
+        }
+        .article-body li::marker { color: var(--gold); font-weight: 500; }
+
+        .article-body blockquote {
+            margin-left: 0; padding: 8px 0 8px 28px;
+            border-left: 3px solid var(--gold);
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.45;
+            color: var(--ink-soft);
+        }
+
+        .article-body strong { font-weight: 600; color: var(--ink); }
+        .article-body em { font-style: italic; }
+        .article-body code {
+            font-family: var(--font-mono);
+            font-size: 0.92em;
+            background: var(--paper-deep);
+            padding: 2px 7px;
+            border-radius: 4px;
+            color: var(--ink-soft);
+        }
+
+        .callout {
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--teal);
+            border-radius: 6px;
+            padding: 22px 26px;
+        }
+        .callout .label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--teal);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .callout p { font-size: 1rem; line-height: 1.65; color: var(--ink-soft); }
+
+        /* Stack diagram */
+        .stack-figure {
+            margin: 2.6em 0;
+            padding: 36px 28px 28px;
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+        .stack-row {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 24px;
+            padding: 16px 0;
+            border-bottom: 1px dotted var(--line);
+            align-items: baseline;
+        }
+        .stack-row:last-child { border-bottom: 0; }
+        .stack-row.intelligence {
+            background: var(--gold-soft);
+            margin: 6px -12px;
+            padding: 16px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(176, 137, 64, 0.25);
+        }
+        .stack-row.intelligence .stack-name { color: var(--gold); }
+        .stack-name {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--teal);
+        }
+        .stack-desc {
+            font-size: 0.95rem;
+            color: var(--ink-mid);
+            line-height: 1.55;
+        }
+        .stack-caption {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--ink-mid);
+            margin-bottom: 18px;
+        }
+
+        /* ─── AUTHOR ─── */
+        .author {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .author-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+            display: grid; place-items: center;
+            color: var(--paper-ivory);
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-style: italic;
+            font-weight: 500;
+        }
+        .author h4 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .author p { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.6; margin-bottom: 12px; }
+        .author-links { display: flex; gap: 14px; font-family: var(--font-mono); font-size: 0.78rem; }
+        .author-links a { color: var(--teal); border-bottom: 1px solid var(--teal-line); padding-bottom: 1px; transition: all 0.2s var(--ease); }
+        .author-links a:hover { border-color: var(--teal); }
+
+        /* ─── NEXT READ ─── */
+        .next-read {
+            padding: 80px 40px;
+            background: var(--paper-deep);
+            margin-top: 60px;
+        }
+        .next-read-inner { max-width: 720px; margin: 0 auto; }
+        .next-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--ink-mid);
+            margin-bottom: 18px;
+        }
+        .next-card {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: center;
+            padding: 32px 36px;
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        }
+        .next-card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -28px rgba(15, 30, 40, 0.4); }
+        .next-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.25;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .next-card p { font-size: 0.95rem; color: var(--ink-mid); }
+        .next-arrow { color: var(--teal); opacity: 0.5; transition: all 0.3s var(--ease); }
+        .next-card:hover .next-arrow { opacity: 1; transform: translateX(4px); }
+
+        /* ─── FOOTER ─── */
+        .footer { background: var(--ink); color: rgba(251, 248, 242, 0.7); padding: 80px 40px 40px; }
+        .footer-inner { max-width: 1320px; margin: 0 auto; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
+            gap: 56px;
+            padding-bottom: 56px;
+            border-bottom: 1px solid rgba(251, 248, 242, 0.1);
+        }
+        .footer-brand { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-size: 1.45rem; color: var(--paper-ivory); margin-bottom: 16px; }
+        .footer-brand em { font-style: italic; color: var(--gold); }
+        .footer-tag { font-size: 0.88rem; line-height: 1.6; max-width: 320px; }
+        .footer h5 { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251, 248, 242, 0.5); margin-bottom: 20px; }
+        .footer ul { list-style: none; }
+        .footer ul li { margin-bottom: 10px; font-size: 0.92rem; }
+        .footer ul a { color: rgba(251, 248, 242, 0.75); transition: color 0.2s var(--ease); }
+        .footer ul a:hover { color: var(--gold); }
+        .footer-bottom { padding-top: 32px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; color: rgba(251, 248, 242, 0.45); }
+
+        @media (max-width: 1024px) {
+            .article-header { padding: 130px 24px 40px; }
+            .article-body { padding: 32px 24px 80px; }
+            .article-body p.lead { font-size: 1.25rem; }
+            .article-body p.lead::first-letter { font-size: 3.2rem; }
+            .next-read { padding: 60px 24px; }
+            .next-card { grid-template-columns: 1fr; gap: 16px; padding: 28px; }
+            .next-arrow { justify-self: end; }
+            .stack-row { grid-template-columns: 1fr; gap: 6px; padding: 12px 0; }
+            .author { grid-template-columns: 1fr; padding: 28px; gap: 18px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .nav { padding: 16px 24px; }
+            .nav.scrolled { padding: 12px 24px; }
+        }
+        @media (max-width: 680px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 24px; right: 24px;
+                background: var(--paper-ivory); border: 1px solid var(--line);
+                border-radius: 16px; padding: 16px; gap: 4px;
+            }
+            .nav-toggle { display: block; }
+            .article-meta { flex-wrap: wrap; gap: 14px; }
+            .article-meta span:not(:last-child)::after { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">
+                <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--teal)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span>Smart<em>Ops</em>Tech</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#expertise">Expertise</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="training.html">Training</a></li>
+            <li><a href="index.html#research">Research</a></li>
+            <li><a href="blog.html" class="active">Writing</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="mailto:uzoeshijuliet@gmail.com" class="nav-cta">Get in touch</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="19" y2="6"/>
+                <line x1="3" y1="11" x2="19" y2="11"/>
+                <line x1="3" y1="16" x2="19" y2="16"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<!-- ─── ARTICLE HEADER ─── -->
+<header class="article-header">
+    <div class="article-inner">
+        <div class="breadcrumb">
+            <span class="breadcrumb-line"></span>
+            <a href="index.html">SmartOpsTech</a>
+            <span>/</span>
+            <a href="blog.html">Writing</a>
+            <span>/ Essay</span>
+        </div>
+        <div class="article-eyebrow">Field notes · 26 May 2026</div>
+        <h1 class="article-title">Above the loop: where <em>AI</em> fits in an industrial control system.</h1>
+        <p class="dek">A working engineer's view on where machine intelligence belongs in a plant — and where it absolutely does not.</p>
+        <div class="article-meta">
+            <span>9 min read</span>
+            <span>By Juliet Uzoeshi</span>
+            <span>Control systems · ML · Practice</span>
+        </div>
+    </div>
+</header>
+
+<!-- ─── ARTICLE BODY ─── -->
+<article class="article-body">
+
+<p class="lead">Every few years, somebody walks into a plant carrying a deck about "AI for manufacturing" and explains, with a slightly evangelical look, that the PLC's days are numbered. The PLC is not paying attention. It is, as ever, scanning its inputs, executing its logic, and writing its outputs every ten milliseconds, with the indifferent reliability of a machine that has been doing the same thing since the 1970s.</p>
+
+<p>I want to be useful in this essay, so let me state the conclusion upfront. AI does not replace the control system. It sits above it. When you understand the layers, you understand exactly where machine intelligence belongs and exactly where it does not. Get the layering wrong and you do not get a smart factory. You get an unsafe one with a chatbot.</p>
+
+<h2>The control stack, briefly</h2>
+
+<p>To talk about where AI fits, we have to be honest about what is already there. The plant is not a blank canvas. It is a layered architecture that took fifty years to mature, and most of its layers have a real reason to exist.</p>
+
+<div class="stack-figure">
+    <div class="stack-caption">A working layering of an industrial system</div>
+    <div class="stack-row">
+        <div class="stack-name">Decision</div>
+        <div class="stack-desc">Operators and engineers acting on insight. Production decisions, maintenance scheduling, capital projects.</div>
+    </div>
+    <div class="stack-row intelligence">
+        <div class="stack-name">Intelligence</div>
+        <div class="stack-desc">Predictive maintenance, anomaly detection, optimisation, forecasting, RAG-grounded assistants. Reads everything below; writes nothing critical.</div>
+    </div>
+    <div class="stack-row">
+        <div class="stack-name">Data</div>
+        <div class="stack-desc">Historian, OPC UA, MQTT, time-series storage. Long-memory of what the plant has done.</div>
+    </div>
+    <div class="stack-row">
+        <div class="stack-name">Supervisory</div>
+        <div class="stack-desc">SCADA, HMI, alarms, batch sequences, recipes. Where the operator sees the plant.</div>
+    </div>
+    <div class="stack-row">
+        <div class="stack-name">Control</div>
+        <div class="stack-desc">PLC. PID loops, interlocks, motion. Deterministic, validated, often safety-related.</div>
+    </div>
+    <div class="stack-row">
+        <div class="stack-name">Field</div>
+        <div class="stack-desc">Sensors, actuators, drives, valves. The physical world.</div>
+    </div>
+</div>
+
+<p>The interesting layer is the one I have highlighted. The intelligence layer. It is new — by industrial standards, anyway — and it is the only place AI gets to live without causing trouble.</p>
+
+<p>That word above matters. The intelligence layer sits above the data layer. It does not replace the controller, and it does not pretend to be one. It reads from the historian, the alarm system, and the document store. It writes recommendations into the supervisory layer and the human's screen. Nothing it produces lands in a safety function, and nothing it produces overrides a verified PID.</p>
+
+<blockquote>An AI system that needs to write into the safety layer to be useful is not an AI problem. It is a control problem dressed up in machine learning.</blockquote>
+
+<h2>Three places AI <em>earns</em> its keep</h2>
+
+<p>Here is where the intelligence layer actually pays for itself. These are not theoretical. They are the patterns I keep installing.</p>
+
+<h3>One: <em>predicting</em> what the alarm cannot</h3>
+
+<p>An alarm tells you a threshold has been crossed. It does not tell you that you crossed it because the bearing has been drifting for three weeks, or that the heat exchanger is fouling in a way that will trip the line by Friday.</p>
+
+<p>A modest anomaly detection model — an ensemble of Isolation Forest plus a small autoencoder is usually plenty — reading vibration, motor current, and process variables, will tell you about the bearing weeks before the threshold. It will catch the heat exchanger fouling because the differential pressure has been drifting one standard deviation above its usual operating envelope for that load. Neither of these things is visible at the alarm layer. Both are obvious to a model that has been allowed to look at the historian.</p>
+
+<div class="callout">
+    <span class="label">In practice</span>
+    <p>On a recent rotating-equipment programme, an ensemble model picked up fourteen incipient faults four to six hours before alarms tripped. F1 of 0.624 — modest by Kaggle standards, very useful by maintenance-team standards.</p>
+</div>
+
+<h3>Two: <em>optimising</em> what the operator cannot keep up with</h3>
+
+<p>A skilled batch operator can tune a recipe by intuition. A skilled batch operator cannot tune twelve recipes across four product variants and a moving raw material spec without something quietly going wrong on at least one of them.</p>
+
+<p>This is where Bayesian optimisation, or contextual bandits, or any of the modern set-point-search methods, become quietly transformative. You let the model propose set-point changes inside engineering-approved bounds, you keep the operator in the loop with a clear yes-or-no on each suggestion, and you measure the result against the existing recipe. Nothing about ISA-88 breaks. The recipe engine still runs the batch. The optimiser merely suggests the set-points.</p>
+
+<p>I have seen this earn 5.8% yield on a batch line where the previous decade of plant trials had hit a wall.</p>
+
+<h3>Three: <em>reading</em> what the dashboard cannot show</h3>
+
+<p>A plant produces a frankly unreasonable amount of text. P&amp;IDs, FDS, alarm rationalisation tables, SOPs, deviation reports, shift handover notes, vendor manuals from 1994 that nobody has opened since 2002 but absolutely need to read before touching that valve.</p>
+
+<p>A retrieval-augmented assistant grounded in this corpus — a proper one, with citations and audit trails, not a chatbot — turns the plant's institutional memory into something queryable. When an engineer asks "what is the failure history of pump P-203" or "what does the SOP say about restarting the dryer after a high-temperature trip", they get an answer with a paragraph they can verify against the source document. This is not glamorous. It is enormously useful.</p>
+
+<h2>Three places AI <em>does not</em> belong</h2>
+
+<p>I am going to be unfashionable here. These are the places I have watched well-meaning AI projects fail, and they fail for structural reasons, not engineering reasons.</p>
+
+<h3>One: inside the safety function</h3>
+
+<p>The safety instrumented system is certified. Its SIL is determined. Its proof test interval is calculated. Its logic solver is locked. There is no version of "let the neural network decide whether to trip the boiler" that survives a HAZOP review, and there should not be. If you have a problem that feels like it needs AI in the safety layer, you have a problem you have not properly defined yet.</p>
+
+<h3>Two: at the bottom of a tuning problem</h3>
+
+<p>If a PID loop is oscillating, you do not need a neural network. You need to tune the loop. There is a long tradition in industry of reaching for AI before reaching for the basics, and it is always a sign that the basics have been skipped. Get the loop tuned, get the alarm thresholds right, get the SCADA standards in place. If, after that, the loop is still struggling, then maybe you have an MPC problem. And maybe an MPC with a learned residual is the right answer to it. But not before.</p>
+
+<h3>Three: in place of an honest historian</h3>
+
+<p>If your data is bad, no model will save you. I have seen organisations spend large sums on machine learning while their historian was running on a five-minute interpolated sample rate, with half the tags unconfigured and the other half misnamed. The model will dutifully learn the noise. Fix the data layer first. The intelligence layer earns nothing it has not been honestly fed.</p>
+
+<h2>A short pre-flight checklist</h2>
+
+<p>If you are about to put AI into a plant, the questions I would ask, in order:</p>
+
+<ul>
+    <li><strong>Is this a control problem or an intelligence problem?</strong> If the answer needs to be acted on in milliseconds and is safety-relevant, it is control. Stop. If the answer is a suggestion, a forecast, or a flag for an engineer, you are in intelligence territory.</li>
+    <li><strong>Where does the model read from, and where does it write to?</strong> Read from the historian. Write to a human screen or a non-critical supervisory tag. Make this explicit before you start.</li>
+    <li><strong>What does the operator do with the output?</strong> If you cannot finish that sentence, the model is not useful yet.</li>
+    <li><strong>What is the cost of being wrong?</strong> An anomaly detector that cries wolf will be muted within a week. Calibrate against the operational cost of false positives, not just the F1 score on your test set.</li>
+    <li><strong>Can the operator argue with the model?</strong> If the explanation is "the algorithm said so", the model will lose the argument the first time it is wrong. Build in a way to ask why.</li>
+    <li><strong>What is the audit trail?</strong> Recommendations, set-point suggestions, alarms — all of them need a record that an auditor can follow. This is non-negotiable in regulated industries and shockingly easy to forget.</li>
+</ul>
+
+<h2>Above the loop, never inside it</h2>
+
+<p>The phrase I keep coming back to with clients is the one in the title. <em>Above the loop, never inside it.</em> Industrial AI's job is to make the loop better — by predicting what it cannot see, by tuning what it cannot tune, by remembering what it cannot remember. Not to replace it.</p>
+
+<p>The PLC is not going anywhere. That is not a defensive statement. It is a structural one. The PLC is good at what it does precisely because it is constrained, deterministic, and validated. The intelligence layer is good at what it does precisely because it is none of those things — it is exploratory, probabilistic, and improving every time it sees the plant.</p>
+
+<p>The most interesting work in industrial automation right now is happening at the boundary between those two worlds. Done well, it is genuinely transformative. Done badly, it is unsafe. The difference is whether you understand the layering.</p>
+
+<p>That is the engineering. The rest is the storytelling.</p>
+
+</article>
+
+<!-- ─── AUTHOR ─── -->
+<section style="padding: 0 40px 80px;">
+    <div class="author">
+        <div class="author-avatar">JU</div>
+        <div>
+            <h4>Juliet Uzoeshi</h4>
+            <p>AI and industrial digitalisation engineer. Founder of SmartOpsTech. ISA Certified Automation Professional. Writes about industrial AI from the perspective of someone who has to make it work on the line.</p>
+            <div class="author-links">
+                <a href="mailto:uzoeshijuliet@gmail.com">Email</a>
+                <a href="https://www.linkedin.com/in/juliet-uzoeshi-546a471b1" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/Omabel212" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── NEXT READ ─── -->
+<section class="next-read">
+    <div class="next-read-inner">
+        <div class="next-eyebrow">More writing</div>
+        <a href="blog.html" class="next-card">
+            <div>
+                <h3>Browse the full <em>writing</em> index</h3>
+                <p>Field notes, essays, and working drafts on industrial AI and control systems engineering.</p>
+            </div>
+            <span class="next-arrow">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 11h14M13 6l5 5-5 5"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <span style="display:inline-block;width:22px;height:22px;position:relative;top:2px;">
+                        <svg viewBox="0 0 26 26" fill="none">
+                            <circle cx="13" cy="13" r="12" stroke="rgba(251,248,242,0.9)" stroke-width="1.5"/>
+                            <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span>Smart<em>Ops</em>Tech</span>
+                </div>
+                <p class="footer-tag">Industrial intelligence for the next generation of smart manufacturing &mdash; built from real plant engineering, not theory.</p>
+            </div>
+            <div>
+                <h5>Explore</h5>
+                <ul>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="training.html">Training</a></li>
+                    <li><a href="index.html#research">Research</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>Writing</h5>
+                <ul>
+                    <li><a href="blog.html">All posts</a></li>
+                    <li><a href="blog-ai-control-systems.html">AI &amp; control systems</a></li>
+                    <li><a href="index.html#research">Working papers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:uzoeshijuliet@gmail.com">uzoeshijuliet@gmail.com</a></li>
+                    <li><a href="https://github.com/Omabel212" target="_blank" rel="noopener">GitHub</a></li>
+                    <li><a href="https://www.linkedin.com/in/juliet-uzoeshi-546a471b1" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 SmartOpsTech</span>
+            <span>Made in Chesterfield, UK</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
+    document.getElementById('navToggle').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing — SmartOpsTech Field Notes</title>
+    <meta name="description" content="Essays and field notes from Juliet Uzoeshi on industrial AI, control systems, and the engineering practice behind smart manufacturing.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #F6F2EA;
+            --paper-deep: #EDE6D6;
+            --paper-ivory: #FBF8F2;
+            --surface: #FFFFFF;
+            --ink: #0E1217;
+            --ink-soft: #2A323D;
+            --ink-mid: #5A6471;
+            --ink-light: #8A9099;
+            --line: #E2DBC9;
+            --line-strong: #C9C0AC;
+            --teal: #0F4C5C;
+            --teal-deep: #0A3540;
+            --teal-soft: rgba(15, 76, 92, 0.07);
+            --teal-line: rgba(15, 76, 92, 0.18);
+            --gold: #B08940;
+            --rust: #A04A2A;
+            --moss: #4A6A3F;
+            --font-display: 'Fraunces', 'Times New Roman', serif;
+            --font-body: 'Inter Tight', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.65;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 100;
+            opacity: 0.35; mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+        }
+        ::selection { background: var(--teal); color: var(--paper-ivory); }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; }
+
+        /* ─── NAV ─── */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: all 0.4s var(--ease); padding: 20px 40px; }
+        .nav.scrolled { background: rgba(246, 242, 234, 0.85); backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1); border-bottom: 1px solid var(--line); padding: 14px 40px; }
+        .nav-inner { max-width: 1320px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--ink); }
+        .logo-mark { display: inline-block; width: 26px; height: 26px; position: relative; top: 3px; }
+        .logo em { font-style: italic; font-weight: 500; color: var(--teal); }
+        .nav-links { display: flex; list-style: none; gap: 4px; align-items: center; }
+        .nav-links a { padding: 10px 16px; font-size: 0.85rem; font-weight: 500; color: var(--ink-soft); border-radius: 999px; transition: all 0.25s var(--ease); }
+        .nav-links a:hover { color: var(--teal); background: var(--teal-soft); }
+        .nav-links a.active { color: var(--teal); background: var(--teal-soft); }
+        .nav-cta { margin-left: 12px; padding: 10px 22px !important; background: var(--ink) !important; color: var(--paper-ivory) !important; border-radius: 999px; transition: all 0.3s var(--ease) !important; }
+        .nav-cta:hover { background: var(--teal) !important; transform: translateY(-1px); }
+        .nav-toggle { display: none; background: none; border: none; padding: 8px; color: var(--ink); }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            padding: 180px 40px 80px;
+            overflow: hidden;
+        }
+        .hero-decor {
+            position: absolute; inset: 0; pointer-events: none;
+            background-image:
+                radial-gradient(circle at 85% 20%, rgba(176, 137, 64, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 8% 80%, rgba(15, 76, 92, 0.07) 0%, transparent 55%);
+        }
+        .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+        .crumb {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.18em;
+            color: var(--teal); margin-bottom: 32px;
+        }
+        .crumb-line { width: 28px; height: 1px; background: var(--teal); opacity: 0.5; }
+        .crumb a { color: var(--ink-mid); }
+        .crumb a:hover { color: var(--teal); }
+        h1.page-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: var(--ink);
+            margin-bottom: 28px;
+        }
+        h1.page-title em {
+            font-style: italic; color: var(--teal);
+            font-variation-settings: 'opsz' 144, 'SOFT' 50;
+            position: relative;
+        }
+        h1.page-title em::after {
+            content: ''; position: absolute;
+            left: 0; right: 0; bottom: -2px; height: 6px;
+            background: var(--gold); opacity: 0.25; border-radius: 2px;
+        }
+        .hero-lede {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--ink-soft);
+            max-width: 720px;
+            font-style: italic;
+        }
+
+        /* ─── FEATURED POST ─── */
+        .section { padding: 80px 40px; }
+        .section.cream { background: var(--paper-deep); }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        .featured {
+            background: var(--ink);
+            color: var(--paper-ivory);
+            border-radius: 24px;
+            overflow: hidden;
+            padding: 64px 56px;
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 56px;
+            align-items: center;
+            position: relative;
+        }
+        .featured::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                radial-gradient(circle at 90% 15%, rgba(176, 137, 64, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 5% 85%, rgba(15, 76, 92, 0.25) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        .featured > * { position: relative; z-index: 2; }
+        .featured-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+        .featured h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+        .featured h2 em {
+            font-style: italic;
+            color: var(--gold);
+            font-variation-settings: 'opsz' 96, 'SOFT' 50;
+        }
+        .featured p {
+            font-size: 1.02rem;
+            line-height: 1.65;
+            color: rgba(251, 248, 242, 0.78);
+            margin-bottom: 28px;
+        }
+        .featured-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 28px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(251, 248, 242, 0.55);
+        }
+        .featured-meta span:not(:last-child)::after {
+            content: '·';
+            margin-left: 20px;
+            opacity: 0.5;
+        }
+        .featured-img {
+            background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 60%, rgba(176, 137, 64, 0.4) 100%);
+            border-radius: 16px;
+            aspect-ratio: 4 / 3;
+            position: relative;
+            display: grid; place-items: center;
+            overflow: hidden;
+        }
+        .featured-img::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(90deg, transparent 0%, transparent calc(100% / 8 - 1px), rgba(251, 248, 242, 0.06) calc(100% / 8 - 1px), rgba(251, 248, 242, 0.06) calc(100% / 8), transparent calc(100% / 8)),
+                linear-gradient(0deg, transparent 0%, transparent calc(100% / 6 - 1px), rgba(251, 248, 242, 0.06) calc(100% / 6 - 1px), rgba(251, 248, 242, 0.06) calc(100% / 6), transparent calc(100% / 6));
+            background-size: 100% 100%;
+        }
+        .featured-img svg {
+            position: relative; z-index: 2;
+            width: 64%; height: auto;
+            opacity: 0.85;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 999px;
+            border: 1px solid var(--paper-ivory);
+            color: var(--paper-ivory);
+            background: transparent;
+            transition: all 0.3s var(--ease);
+        }
+        .btn:hover { background: var(--paper-ivory); color: var(--ink); }
+
+        /* ─── POST LIST ─── */
+        .posts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--line);
+        }
+        .posts-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+        .posts-header h2 em { font-style: italic; color: var(--teal); }
+        .posts-header-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--ink-mid);
+        }
+        .post-list { display: grid; gap: 0; }
+        .post-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 120px 24px;
+            gap: 32px;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--line);
+            align-items: center;
+            transition: transform 0.3s var(--ease);
+        }
+        .post-row:hover { transform: translateX(6px); }
+        .post-row:hover h3 { color: var(--teal); }
+        .post-row[aria-disabled="true"] { opacity: 0.55; cursor: default; pointer-events: none; }
+        .post-date {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-mid);
+        }
+        .post-row h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.25;
+            color: var(--ink);
+            transition: color 0.3s var(--ease);
+            letter-spacing: -0.01em;
+        }
+        .post-row h3 em { font-style: italic; color: var(--teal); font-variation-settings: 'opsz' 36, 'SOFT' 50; }
+        .post-row p {
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: var(--ink-mid);
+            margin-top: 8px;
+            max-width: 620px;
+        }
+        .post-tag {
+            justify-self: end;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--teal);
+            padding: 6px 12px;
+            background: var(--teal-soft);
+            border-radius: 999px;
+        }
+        .post-tag.soon {
+            color: var(--ink-mid);
+            background: var(--paper-deep);
+        }
+        .post-arrow { color: var(--teal); opacity: 0.5; transition: all 0.3s var(--ease); }
+        .post-row:hover .post-arrow { opacity: 1; transform: translateX(3px); }
+
+        /* ─── CTA STRIP ─── */
+        .cta-strip { padding: 100px 40px; background: var(--paper-ivory); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .cta-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+        .cta-strip h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .cta-strip h2 em { font-style: italic; color: var(--teal); }
+        .cta-strip p { font-size: 1rem; color: var(--ink-mid); margin-top: 12px; max-width: 560px; }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: var(--ink);
+            color: var(--paper-ivory);
+            border-radius: 999px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.3s var(--ease);
+        }
+        .btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
+
+        /* ─── FOOTER ─── */
+        .footer { background: var(--ink); color: rgba(251, 248, 242, 0.7); padding: 80px 40px 40px; }
+        .footer-inner { max-width: 1320px; margin: 0 auto; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
+            gap: 56px;
+            padding-bottom: 56px;
+            border-bottom: 1px solid rgba(251, 248, 242, 0.1);
+        }
+        .footer-brand { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-size: 1.45rem; color: var(--paper-ivory); margin-bottom: 16px; }
+        .footer-brand em { font-style: italic; color: var(--gold); }
+        .footer-tag { font-size: 0.88rem; line-height: 1.6; max-width: 320px; }
+        .footer h5 { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251, 248, 242, 0.5); margin-bottom: 20px; }
+        .footer ul { list-style: none; }
+        .footer ul li { margin-bottom: 10px; font-size: 0.92rem; }
+        .footer ul a { color: rgba(251, 248, 242, 0.75); transition: color 0.2s var(--ease); }
+        .footer ul a:hover { color: var(--gold); }
+        .footer-bottom { padding-top: 32px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; color: rgba(251, 248, 242, 0.45); }
+
+        @media (max-width: 1024px) {
+            .featured { grid-template-columns: 1fr; padding: 48px 32px; gap: 32px; }
+            .featured-img { aspect-ratio: 16 / 9; }
+            .post-row { grid-template-columns: 1fr 24px; gap: 12px; padding: 24px 0; }
+            .post-date, .post-tag { grid-column: 1 / -1; justify-self: start; }
+            .post-arrow { justify-self: end; grid-row: 1; }
+            .cta-inner { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .nav { padding: 16px 24px; }
+            .nav.scrolled { padding: 12px 24px; }
+            .hero { padding: 140px 24px 64px; }
+            .section { padding: 64px 24px; }
+        }
+        @media (max-width: 680px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 24px; right: 24px;
+                background: var(--paper-ivory); border: 1px solid var(--line);
+                border-radius: 16px; padding: 16px; gap: 4px;
+            }
+            .nav-toggle { display: block; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">
+                <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--teal)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span>Smart<em>Ops</em>Tech</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#expertise">Expertise</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="training.html">Training</a></li>
+            <li><a href="index.html#research">Research</a></li>
+            <li><a href="blog.html" class="active">Writing</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="mailto:uzoeshijuliet@gmail.com" class="nav-cta">Get in touch</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="19" y2="6"/>
+                <line x1="3" y1="11" x2="19" y2="11"/>
+                <line x1="3" y1="16" x2="19" y2="16"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+    <div class="hero-decor"></div>
+    <div class="hero-inner">
+        <div class="crumb">
+            <span class="crumb-line"></span>
+            <a href="index.html">SmartOpsTech</a>
+            <span>/ Writing</span>
+        </div>
+        <h1 class="page-title">Field notes from the <em>plant floor.</em></h1>
+        <p class="hero-lede">Short essays on industrial AI, control systems, and the engineering practice that holds them together. Written by Juliet Uzoeshi, for working engineers.</p>
+    </div>
+</section>
+
+<!-- ─── FEATURED POST ─── -->
+<section class="section">
+    <div class="wrap">
+        <article class="featured">
+            <div>
+                <div class="featured-eyebrow">Featured · 26 May 2026 · 9 min read</div>
+                <h2>Above the loop: where <em>AI</em> fits in an industrial control system.</h2>
+                <p>A working engineer's view on where machine intelligence belongs in a plant — and where it absolutely does not. From the PID at the bottom of the stack to the recommendation engine sitting above it, this is the layered architecture I use to keep AI out of trouble and earning its keep.</p>
+                <div class="featured-meta">
+                    <span>Control systems</span>
+                    <span>Machine learning</span>
+                    <span>Practice</span>
+                </div>
+                <a href="blog-ai-control-systems.html" class="btn">
+                    Read the essay
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 7h10M8 3l4 4-4 4"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="featured-img">
+                <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Stylised loop + layered architecture motif -->
+                    <g stroke="rgba(251, 248, 242, 0.85)" stroke-width="1.4" fill="none">
+                        <!-- Sensor row -->
+                        <rect x="20" y="140" width="200" height="22" rx="4"/>
+                        <text x="120" y="156" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(251,248,242,0.85)" stroke="none">SENSORS / PLC</text>
+                        <!-- Controller -->
+                        <rect x="40" y="100" width="160" height="22" rx="4"/>
+                        <text x="120" y="116" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(251,248,242,0.85)" stroke="none">SCADA / HISTORIAN</text>
+                        <!-- AI Layer -->
+                        <rect x="60" y="60" width="120" height="22" rx="4" stroke="rgba(176, 137, 64, 0.95)" stroke-width="1.6"/>
+                        <text x="120" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(176, 137, 64, 0.95)" stroke="none">INTELLIGENCE</text>
+                        <!-- Decision -->
+                        <rect x="80" y="20" width="80" height="22" rx="4"/>
+                        <text x="120" y="36" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(251,248,242,0.85)" stroke="none">DECISION</text>
+                        <!-- Connecting lines -->
+                        <line x1="120" y1="122" x2="120" y2="140" stroke-dasharray="2 3"/>
+                        <line x1="120" y1="82" x2="120" y2="100" stroke-dasharray="2 3"/>
+                        <line x1="120" y1="42" x2="120" y2="60" stroke-dasharray="2 3"/>
+                    </g>
+                </svg>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- ─── POST LIST ─── -->
+<section class="section cream">
+    <div class="wrap">
+        <div class="posts-header">
+            <h2>More <em>writing.</em></h2>
+            <div class="posts-header-eyebrow">Index · 4 posts</div>
+        </div>
+
+        <div class="post-list">
+
+            <a href="blog-ai-control-systems.html" class="post-row">
+                <div class="post-date">26 May 2026</div>
+                <div>
+                    <h3>Above the loop: where <em>AI</em> fits in an industrial control system</h3>
+                    <p>A working engineer's view on where machine intelligence earns its keep in a plant, and the three places it absolutely does not belong.</p>
+                </div>
+                <span class="post-tag">Essay</span>
+                <span class="post-arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 10h12M11 5l5 5-5 5"/>
+                    </svg>
+                </span>
+            </a>
+
+            <a href="#pid-migration" id="pid-migration" class="post-row" aria-disabled="true">
+                <div class="post-date">Coming soon</div>
+                <div>
+                    <h3>What makes a PID migration <em>actually</em> risky</h3>
+                    <p>Most loop migrations fail in the same five places. A pragmatic risk register from someone who has run more S5-to-S7 jobs than is reasonable.</p>
+                </div>
+                <span class="post-tag soon">Field note</span>
+                <span class="post-arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 10h12M11 5l5 5-5 5"/>
+                    </svg>
+                </span>
+            </a>
+
+            <a href="#time-series" id="time-series" class="post-row" aria-disabled="true">
+                <div class="post-date">Coming soon</div>
+                <div>
+                    <h3>Reading the plant floor: time-series are a <em>language</em></h3>
+                    <p>Why so much industrial ML work is really linguistics in disguise, and how thinking about historian data as a corpus changes the modelling choices you make.</p>
+                </div>
+                <span class="post-tag soon">Essay</span>
+                <span class="post-arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 10h12M11 5l5 5-5 5"/>
+                    </svg>
+                </span>
+            </a>
+
+            <a href="#xai" class="post-row" aria-disabled="true">
+                <div class="post-date">Coming soon</div>
+                <div>
+                    <h3>The engineer's case for <em>explainable AI</em></h3>
+                    <p>If your operator can't argue with the model, the model is not going to last on the line. Notes on what explainability actually has to deliver in industrial settings.</p>
+                </div>
+                <span class="post-tag soon">Essay</span>
+                <span class="post-arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 10h12M11 5l5 5-5 5"/>
+                    </svg>
+                </span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA STRIP ─── -->
+<section class="cta-strip">
+    <div class="cta-inner">
+        <div>
+            <h2>New posts roughly <em>monthly.</em></h2>
+            <p>If you'd like a note when something new goes up — or want to talk about a specific topic — drop me a line.</p>
+        </div>
+        <a href="mailto:uzoeshijuliet@gmail.com?subject=SmartOpsTech%20writing" class="btn-primary">
+            uzoeshijuliet@gmail.com
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M2 7h10M8 3l4 4-4 4"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <span style="display:inline-block;width:22px;height:22px;position:relative;top:2px;">
+                        <svg viewBox="0 0 26 26" fill="none">
+                            <circle cx="13" cy="13" r="12" stroke="rgba(251,248,242,0.9)" stroke-width="1.5"/>
+                            <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span>Smart<em>Ops</em>Tech</span>
+                </div>
+                <p class="footer-tag">Industrial intelligence for the next generation of smart manufacturing &mdash; built from real plant engineering, not theory.</p>
+            </div>
+            <div>
+                <h5>Explore</h5>
+                <ul>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="training.html">Training</a></li>
+                    <li><a href="index.html#research">Research</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>Writing</h5>
+                <ul>
+                    <li><a href="blog.html">All posts</a></li>
+                    <li><a href="blog-ai-control-systems.html">AI &amp; control systems</a></li>
+                    <li><a href="index.html#research">Working papers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:uzoeshijuliet@gmail.com">uzoeshijuliet@gmail.com</a></li>
+                    <li><a href="https://github.com/Omabel212" target="_blank" rel="noopener">GitHub</a></li>
+                    <li><a href="https://www.linkedin.com/in/juliet-uzoeshi-546a471b1" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 SmartOpsTech</span>
+            <span>Made in Chesterfield, UK</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
+    document.getElementById('navToggle').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+</script>
+
+</body>
+</html>
