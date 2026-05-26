@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training — SmartOpsTech Academy</title>
+    <meta name="description" content="Industry-recognised professional training across project management, AI &amp; data science, software development, and industrial automation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #F6F2EA;
+            --paper-deep: #EDE6D6;
+            --paper-ivory: #FBF8F2;
+            --surface: #FFFFFF;
+
+            --ink: #0E1217;
+            --ink-soft: #2A323D;
+            --ink-mid: #5A6471;
+            --ink-light: #8A9099;
+
+            --line: #E2DBC9;
+            --line-strong: #C9C0AC;
+
+            --teal: #0F4C5C;
+            --teal-deep: #0A3540;
+            --teal-soft: rgba(15, 76, 92, 0.07);
+            --teal-line: rgba(15, 76, 92, 0.18);
+
+            --gold: #B08940;
+            --gold-soft: rgba(176, 137, 64, 0.1);
+            --rust: #A04A2A;
+            --moss: #4A6A3F;
+
+            /* track-specific accents */
+            --t-pm: #6B4E8F;       /* aubergine */
+            --t-ai: #0F4C5C;       /* teal */
+            --t-sw: #B08940;       /* gold */
+            --t-ia: #A04A2A;       /* burnt sienna */
+
+            --font-display: 'Fraunces', 'Times New Roman', serif;
+            --font-body: 'Inter Tight', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.65;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.35;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+        }
+
+        ::selection { background: var(--teal); color: var(--paper-ivory); }
+
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; }
+
+        /* ─── LAYOUT ─── */
+        .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+        .wrap-tight { max-width: 1140px; margin: 0 auto; padding: 0 40px; }
+
+        /* ─── NAVIGATION ─── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 50;
+            transition: all 0.4s var(--ease);
+            padding: 20px 40px;
+        }
+
+        .nav.scrolled {
+            background: rgba(246, 242, 234, 0.85);
+            backdrop-filter: blur(20px) saturate(1.1);
+            -webkit-backdrop-filter: blur(20px) saturate(1.1);
+            border-bottom: 1px solid var(--line);
+            padding: 14px 40px;
+        }
+
+        .nav-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.45rem;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+
+        .logo-mark { display: inline-block; width: 26px; height: 26px; position: relative; top: 3px; }
+        .logo em { font-style: italic; font-weight: 500; color: var(--teal); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--ink-soft);
+            border-radius: 999px;
+            transition: all 0.25s var(--ease);
+        }
+
+        .nav-links a:hover { color: var(--teal); background: var(--teal-soft); }
+        .nav-links a.active { color: var(--teal); background: var(--teal-soft); }
+
+        .nav-cta {
+            margin-left: 12px;
+            padding: 10px 22px !important;
+            background: var(--ink) !important;
+            color: var(--paper-ivory) !important;
+            border-radius: 999px;
+            transition: all 0.3s var(--ease) !important;
+        }
+
+        .nav-cta:hover { background: var(--teal) !important; transform: translateY(-1px); }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            padding: 8px;
+            color: var(--ink);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            padding: 180px 40px 100px;
+            overflow: hidden;
+        }
+
+        .hero-decor {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 85% 25%, rgba(176, 137, 64, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 5% 85%, rgba(107, 78, 143, 0.08) 0%, transparent 55%);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 1320px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 80px;
+            align-items: end;
+        }
+
+        .crumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--teal);
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: rise 0.9s var(--ease) 0.1s forwards;
+        }
+
+        .crumb a { color: var(--ink-mid); transition: color 0.2s; }
+        .crumb a:hover { color: var(--teal); }
+        .crumb-sep { color: var(--ink-light); }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-variation-settings: "opsz" 144, "SOFT" 50;
+            font-weight: 400;
+            font-size: clamp(2.6rem, 6vw, 5rem);
+            line-height: 1.0;
+            letter-spacing: -0.035em;
+            color: var(--ink);
+        }
+
+        .hero h1 .line {
+            display: block;
+            opacity: 0;
+            transform: translateY(28px);
+            animation: rise 1s var(--ease) forwards;
+        }
+        .hero h1 .line:nth-child(1) { animation-delay: 0.2s; }
+        .hero h1 .line:nth-child(2) { animation-delay: 0.32s; }
+        .hero h1 .line:nth-child(3) { animation-delay: 0.44s; }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--gold);
+            font-variation-settings: "opsz" 144, "SOFT" 100;
+        }
+
+        @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+        .hero-side {
+            opacity: 0;
+            animation: rise 1.1s var(--ease) 0.7s forwards;
+        }
+
+        .hero-side-desc {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            max-width: 400px;
+            margin-bottom: 32px;
+            padding-left: 24px;
+            border-left: 2px solid var(--gold);
+        }
+
+        .hero-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 24px;
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+        }
+
+        .hero-meta-item .lbl {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--ink-mid);
+            margin-bottom: 6px;
+        }
+
+        .hero-meta-item .val {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+
+        /* ─── TRACKS NAVIGATION ─── */
+        .tracks-nav {
+            background: var(--paper-ivory);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 24px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(20px);
+            background: rgba(251, 248, 242, 0.92);
+        }
+
+        .tracks-nav-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .track-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 22px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--ink-soft);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            transition: all 0.3s var(--ease);
+        }
+
+        .track-pill:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        .track-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--teal);
+        }
+
+        .track-pill.pm .dot { background: var(--t-pm); }
+        .track-pill.ai .dot { background: var(--t-ai); }
+        .track-pill.sw .dot { background: var(--t-sw); }
+        .track-pill.ia .dot { background: var(--t-ia); }
+
+        /* ─── TRACK SECTIONS ─── */
+        .track {
+            padding: 120px 40px;
+            position: relative;
+        }
+
+        .track.cream { background: var(--paper-deep); }
+        .track.ivory { background: var(--paper-ivory); }
+
+        .track-header {
+            max-width: 1320px;
+            margin: 0 auto 64px;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            align-items: end;
+        }
+
+        .track-num {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            color: var(--track-color, var(--teal));
+            opacity: 0.18;
+        }
+
+        .track-info .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--track-color, var(--teal));
+            margin-bottom: 18px;
+        }
+
+        .track-info .eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--track-color, var(--teal));
+        }
+
+        .track-info h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .track-info h2 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--track-color, var(--teal));
+        }
+
+        .track-info p {
+            font-size: 1.05rem;
+            color: var(--ink-soft);
+            max-width: 600px;
+        }
+
+        /* ─── COURSE CARDS ─── */
+        .courses {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .course {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 36px 32px;
+            transition: all 0.4s var(--ease);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--track-color, var(--teal));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s var(--ease);
+        }
+
+        .course:hover::before { transform: scaleX(1); }
+
+        .course:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 60px -28px rgba(14, 18, 23, 0.18);
+            border-color: var(--track-color, var(--teal));
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-light);
+        }
+
+        .course-code {
+            color: var(--track-color, var(--teal));
+            font-weight: 500;
+        }
+
+        .course h3 {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            color: var(--ink);
+        }
+
+        .course-desc {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin-bottom: 24px;
+            flex: 1;
+        }
+
+        .course-attrs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 18px 0;
+            border-top: 1px dotted var(--line-strong);
+            border-bottom: 1px dotted var(--line-strong);
+            margin-bottom: 24px;
+        }
+
+        .course-attr .lbl {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-light);
+            margin-bottom: 6px;
+        }
+
+        .course-attr .val {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .course-outline {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .course-outline li {
+            padding: 6px 0 6px 22px;
+            font-size: 0.88rem;
+            color: var(--ink-soft);
+            position: relative;
+        }
+
+        .course-outline li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 12px;
+            height: 1px;
+            background: var(--track-color, var(--teal));
+        }
+
+        .course-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .course-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .course-price .amt {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+        }
+
+        .course-price .per {
+            font-size: 0.78rem;
+            color: var(--ink-mid);
+        }
+
+        .course-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--ink);
+            color: var(--paper-ivory);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 999px;
+            transition: all 0.3s var(--ease);
+        }
+
+        .course-cta:hover {
+            background: var(--track-color, var(--teal));
+            transform: translateY(-1px);
+        }
+
+        .course-cta svg { transition: transform 0.3s var(--ease); }
+        .course-cta:hover svg { transform: translateX(3px); }
+
+        /* ─── FORMATS / FAQ STRIP ─── */
+        .formats {
+            padding: 120px 40px;
+            background: var(--ink);
+            color: var(--paper-ivory);
+        }
+
+        .formats-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .formats-header {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            margin-bottom: 64px;
+            align-items: end;
+        }
+
+        .formats-header .eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--gold);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .formats-header .eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .formats-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+        }
+
+        .formats-header h2 em {
+            font-style: italic;
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .formats-header p {
+            color: rgba(251, 248, 242, 0.7);
+            font-size: 1.05rem;
+            max-width: 540px;
+        }
+
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .format-card {
+            padding: 36px 32px;
+            background: rgba(251, 248, 242, 0.03);
+            border: 1px solid rgba(251, 248, 242, 0.08);
+            border-radius: 16px;
+            transition: all 0.4s var(--ease);
+        }
+
+        .format-card:hover {
+            background: rgba(251, 248, 242, 0.06);
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .format-card .num {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 2.4rem;
+            font-weight: 400;
+            color: var(--gold);
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .format-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--paper-ivory);
+            margin-bottom: 14px;
+        }
+
+        .format-card p {
+            font-size: 0.92rem;
+            color: rgba(251, 248, 242, 0.65);
+            line-height: 1.7;
+        }
+
+        /* ─── CONTACT CTA ─── */
+        .cta-strip {
+            padding: 120px 40px;
+            text-align: center;
+            background: var(--paper-deep);
+        }
+
+        .cta-strip h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.035em;
+            max-width: 880px;
+            margin: 0 auto 24px;
+        }
+
+        .cta-strip h2 em {
+            font-style: italic;
+            color: var(--teal);
+            font-weight: 300;
+        }
+
+        .cta-strip p {
+            color: var(--ink-soft);
+            font-size: 1.1rem;
+            max-width: 580px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-strip-mail {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 32px;
+            background: var(--ink);
+            color: var(--paper-ivory);
+            border-radius: 999px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s var(--ease);
+        }
+
+        .cta-strip-mail:hover {
+            background: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px -12px rgba(15, 76, 92, 0.4);
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            padding: 72px 40px 32px;
+            background: var(--ink);
+            color: var(--paper-ivory);
+        }
+
+        .footer-grid {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(251, 248, 242, 0.1);
+        }
+
+        .footer-brand .logo { color: var(--paper-ivory); margin-bottom: 20px; }
+        .footer-brand p {
+            color: rgba(251, 248, 242, 0.5);
+            font-size: 0.92rem;
+            max-width: 340px;
+            line-height: 1.7;
+        }
+
+        .footer h4 {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            margin-bottom: 22px;
+        }
+
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a {
+            color: rgba(251, 248, 242, 0.65);
+            font-size: 0.9rem;
+            transition: color 0.25s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+
+        .footer-bottom {
+            max-width: 1320px;
+            margin: 24px auto 0;
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            color: rgba(251, 248, 242, 0.4);
+        }
+
+        /* ─── REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .wrap, .wrap-tight { padding: 0 24px; }
+            .hero { padding: 140px 24px 80px; }
+            .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+            .track { padding: 90px 24px; }
+            .track-header { grid-template-columns: 1fr; gap: 24px; }
+            .track-num { font-size: 5rem; }
+            .courses { grid-template-columns: 1fr; }
+            .formats { padding: 90px 24px; }
+            .formats-header { grid-template-columns: 1fr; gap: 24px; }
+            .formats-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .nav { padding: 16px 24px; }
+            .nav.scrolled { padding: 12px 24px; }
+            .tracks-nav { padding: 18px 24px; }
+        }
+
+        @media (max-width: 680px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 24px; right: 24px;
+                background: var(--paper-ivory);
+                border: 1px solid var(--line);
+                border-radius: 16px;
+                padding: 16px;
+                gap: 4px;
+            }
+            .nav-toggle { display: block; }
+            .course-attrs { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { flex-direction: column; gap: 12px; }
+            .course-foot { flex-direction: column; align-items: stretch; }
+            .course-cta { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">
+                <svg viewBox="0 0 26 26" fill="none">
+                    <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#0F4C5C" stroke-width="1.8" fill="none"/>
+                    <path d="M13 8 L18 13 L13 18 L8 13 Z" fill="#0F4C5C"/>
+                </svg>
+            </span>
+            <span>Smart<em>Ops</em>Tech</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#expertise">Expertise</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="training.html" class="active">Training</a></li>
+            <li><a href="index.html#results">Results</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="#enrol" class="nav-cta">Enrol</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="19" y2="6"/>
+                <line x1="3" y1="11" x2="19" y2="11"/>
+                <line x1="3" y1="16" x2="19" y2="16"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+    <div class="hero-decor"></div>
+    <div class="hero-inner">
+        <div>
+            <div class="crumb">
+                <a href="index.html">SmartOpsTech</a>
+                <span class="crumb-sep">/</span>
+                <span>Academy</span>
+            </div>
+            <h1>
+                <span class="line">Four disciplines.</span>
+                <span class="line"><em>One</em> career trajectory.</span>
+            </h1>
+        </div>
+        <aside class="hero-side">
+            <p class="hero-side-desc">Industry-recognised professional training programmes &mdash; built from real plant work, real codebases, and real project deliveries. For engineering teams who want to move from theory to capability.</p>
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <div class="lbl">Next intake</div>
+                    <div class="val">September 2026</div>
+                </div>
+                <div class="hero-meta-item">
+                    <div class="lbl">Cohort size</div>
+                    <div class="val">8&ndash;14 engineers</div>
+                </div>
+                <div class="hero-meta-item">
+                    <div class="lbl">Delivery</div>
+                    <div class="val">Hybrid / on-site</div>
+                </div>
+                <div class="hero-meta-item">
+                    <div class="lbl">Certificate</div>
+                    <div class="val">CPD-aligned</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<!-- ─── TRACK NAVIGATION ─── -->
+<nav class="tracks-nav">
+    <div class="tracks-nav-inner">
+        <a href="#track-pm" class="track-pill pm"><span class="dot"></span>Project Management</a>
+        <a href="#track-ai" class="track-pill ai"><span class="dot"></span>AI &amp; Data Science</a>
+        <a href="#track-sw" class="track-pill sw"><span class="dot"></span>Software Development</a>
+        <a href="#track-ia" class="track-pill ia"><span class="dot"></span>Industrial Automation</a>
+    </div>
+</nav>
+
+<!-- ─── TRACK: PROJECT MANAGEMENT ─── -->
+<section class="track" id="track-pm" style="--track-color: #6B4E8F;">
+    <div class="track-header">
+        <div class="track-num">01</div>
+        <div class="track-info">
+            <div class="eyebrow">Track 01 &middot; Discipline</div>
+            <h2>Project <em>Management</em></h2>
+            <p>Capital project delivery for engineering teams &mdash; from initial scoping through commissioning and handover. Built on real CDM, FAT/SAT, and risk frameworks from live industrial engagements.</p>
+        </div>
+    </div>
+
+    <div class="courses">
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">PM-101</span>
+                <span>Foundation</span>
+            </div>
+            <h3>PMP Exam Preparation</h3>
+            <p class="course-desc">Structured 35-hour programme aligned to the PMI PMP exam content outline. Combines facilitated sessions, practice questions, and live case studies from industrial engagements.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">5 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Intermediate</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>People, process &amp; business environment domains</li>
+                <li>Agile, hybrid &amp; predictive methodologies</li>
+                <li>4 timed practice exams with feedback</li>
+                <li>PMI-approved 35 contact hours</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,950</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">PM-201</span>
+                <span>Advanced</span>
+            </div>
+            <h3>Agile &amp; Scrum for Engineering Teams</h3>
+            <p class="course-desc">Adapting Agile and Scrum for hardware-software hybrid projects &mdash; where you can&rsquo;t deploy a half-built control system on Friday afternoon. Practical patterns for SAT cycles, milestone gates, and stakeholder cadence.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Intermediate</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Scrum events &amp; artefacts in hardware contexts</li>
+                <li>Kanban for ongoing maintenance backlogs</li>
+                <li>Estimating with deep uncertainty</li>
+                <li>Stakeholder governance &amp; reporting</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,400</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">PM-301</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Industrial Project Delivery</h3>
+            <p class="course-desc">End-to-end delivery of capital control system projects &mdash; URS, FDS, SDS, FAT, SAT and handover. Walks through real engineering deliverables from chemical, food &amp; beverage, and lime production sites.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">4 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>CDM 2015 regulations for control engineers</li>
+                <li>FAT &amp; SAT planning, scripting, execution</li>
+                <li>Document control: URS &rarr; FDS &rarr; SDS chain</li>
+                <li>Commissioning, training &amp; handover gates</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,750</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">PM-302</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Risk &amp; HAZOP for Capital Projects</h3>
+            <p class="course-desc">Quantitative and qualitative risk management for engineering project managers, with a deep dive into HAZOP facilitation, LOPA, and risk register stewardship across the project lifecycle.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">2 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Intermediate</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>HAZOP facilitation &amp; documentation</li>
+                <li>LOPA, fault tree &amp; bow-tie analysis</li>
+                <li>Risk register design &amp; review cadence</li>
+                <li>Contingency &amp; escalation pathways</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,200</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- ─── TRACK: AI & DATA SCIENCE ─── -->
+<section class="track cream" id="track-ai" style="--track-color: #0F4C5C;">
+    <div class="track-header">
+        <div class="track-num">02</div>
+        <div class="track-info">
+            <div class="eyebrow">Track 02 &middot; Discipline</div>
+            <h2>AI &amp; <em>Data Science</em></h2>
+            <p>Applied machine learning for process engineers &mdash; not data science theatre. Every course ends with a deployed model running against real industrial data, not a notebook in a folder.</p>
+        </div>
+    </div>
+
+    <div class="courses">
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-101</span>
+                <span>Foundation</span>
+            </div>
+            <h3>Machine Learning for Process Engineers</h3>
+            <p class="course-desc">A grounded introduction to supervised and unsupervised ML using industrial time-series data. Engineers leave able to frame, train, evaluate, and critique their first production-relevant model.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">5 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Foundation</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Python, NumPy, pandas for engineers</li>
+                <li>Regression, classification, clustering essentials</li>
+                <li>Cross-validation &amp; metric selection that matter</li>
+                <li>Capstone: predict a process KPI from historian data</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,850</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-201</span>
+                <span>Advanced</span>
+            </div>
+            <h3>Industrial Anomaly Detection</h3>
+            <p class="course-desc">Isolation Forest, autoencoder, and ensemble approaches for catching incipient faults on rotating equipment. Includes the operational reality of false-positive cost and operator trust.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Univariate vs multivariate anomaly framing</li>
+                <li>Autoencoders &amp; reconstruction error</li>
+                <li>Ensembles &amp; threshold calibration</li>
+                <li>From alert to operator-trusted workflow</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,500</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-202</span>
+                <span>Advanced</span>
+            </div>
+            <h3>Time-Series Forecasting &amp; Predictive Maintenance</h3>
+            <p class="course-desc">Classical methods (ARIMA, exponential smoothing) alongside modern deep approaches (LSTM, Temporal Fusion Transformer) applied to demand, energy, and equipment health forecasting.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">4 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Statistical baselines: ARIMA, ETS, Prophet</li>
+                <li>Deep forecasting: LSTM, TFT, N-BEATS</li>
+                <li>RUL estimation for predictive maintenance</li>
+                <li>Probabilistic forecasting &amp; uncertainty</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,800</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-301</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Computer Vision for Quality Inspection</h3>
+            <p class="course-desc">From classical image processing through to modern CNNs and vision transformers, deployed on edge hardware for in-line quality inspection at production speed.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">4 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>OpenCV for industrial inspection</li>
+                <li>Transfer learning with CNNs &amp; ViTs</li>
+                <li>Edge deployment: Jetson, OpenVINO</li>
+                <li>Integration with PLC &amp; SCADA via OPC UA</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,950</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-302</span>
+                <span>Specialist</span>
+            </div>
+            <h3>LLMs &amp; RAG for Industrial Knowledge</h3>
+            <p class="course-desc">Build production-grade retrieval-augmented generation systems grounded in P&amp;IDs, FDS documents, and operating procedures. Citation traceability, hallucination control, and on-prem deployment.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Embeddings &amp; vector search fundamentals</li>
+                <li>Chunking strategies for technical documents</li>
+                <li>Citation, traceability &amp; hallucination control</li>
+                <li>On-prem deployment patterns &amp; security</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,650</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">AI-303</span>
+                <span>Specialist</span>
+            </div>
+            <h3>MLOps for Industrial AI</h3>
+            <p class="course-desc">Closing the gap between a working notebook and a model that survives in production. Versioning, deployment, monitoring, and drift detection for plant-floor ML systems.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>MLflow &amp; model registries</li>
+                <li>Containerised serving with FastAPI / Triton</li>
+                <li>Monitoring, drift detection &amp; retraining</li>
+                <li>On-prem &amp; edge MLOps patterns</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,600</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- ─── TRACK: SOFTWARE DEVELOPMENT ─── -->
+<section class="track" id="track-sw" style="--track-color: #B08940;">
+    <div class="track-header">
+        <div class="track-num">03</div>
+        <div class="track-info">
+            <div class="eyebrow">Track 03 &middot; Discipline</div>
+            <h2>Software <em>Development</em></h2>
+            <p>Modern software engineering practices, tailored for the industrial automation context &mdash; where uptime, traceability, and safety constraints shape every architectural decision.</p>
+        </div>
+    </div>
+
+    <div class="courses">
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">SW-101</span>
+                <span>Foundation</span>
+            </div>
+            <h3>Python for Engineering</h3>
+            <p class="course-desc">A focused, no-fluff Python course for engineers who need to automate data work, build small tools, and integrate with industrial systems. From zero to writing useful scripts in five days.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">5 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Foundation</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Core language: types, functions, packages</li>
+                <li>pandas &amp; NumPy for engineering data</li>
+                <li>Working with CSV, Excel, OPC UA, Modbus</li>
+                <li>Testing, virtual environments &amp; packaging</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,750</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">SW-201</span>
+                <span>Advanced</span>
+            </div>
+            <h3>Industrial Web Apps: FastAPI + React</h3>
+            <p class="course-desc">Build production-grade web applications that wrap industrial data &mdash; FastAPI back-ends, React front-ends, time-series visualisation, and authentication. End with a working internal tool.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">5 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>FastAPI: routing, validation, async</li>
+                <li>React fundamentals &amp; Recharts visualisation</li>
+                <li>WebSockets for live process data</li>
+                <li>Auth, deployment &amp; reverse proxy</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£2,200</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">SW-202</span>
+                <span>Advanced</span>
+            </div>
+            <h3>Database Design for OT Systems</h3>
+            <p class="course-desc">Designing data storage for industrial systems &mdash; PostgreSQL for relational data, TimescaleDB and InfluxDB for time series, and the trade-offs that matter when historian data meets analytics.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Relational design &amp; normalisation</li>
+                <li>Time-series databases &amp; downsampling</li>
+                <li>Schemas for batch, continuous &amp; discrete processes</li>
+                <li>Backup, retention &amp; compliance patterns</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,400</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">SW-301</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Git, CI/CD &amp; DevOps for Engineers</h3>
+            <p class="course-desc">Software engineering hygiene for control and automation engineers &mdash; version control, code review, automated testing, and continuous deployment patterns adapted for the industrial reality.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Git workflows: trunk-based, GitHub Flow</li>
+                <li>Code review &amp; PR culture for small teams</li>
+                <li>GitHub Actions &amp; GitLab CI pipelines</li>
+                <li>Versioning PLC code, recipes &amp; deliverables</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,350</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- ─── TRACK: INDUSTRIAL AUTOMATION ─── -->
+<section class="track ivory" id="track-ia" style="--track-color: #A04A2A;">
+    <div class="track-header">
+        <div class="track-num">04</div>
+        <div class="track-info">
+            <div class="eyebrow">Track 04 &middot; Discipline</div>
+            <h2>Industrial <em>Automation</em></h2>
+            <p>The core craft &mdash; from PLC programming foundations through to functional safety. Taught by certified engineers with production experience across Siemens, Rockwell, Beckhoff, and Codra platforms.</p>
+        </div>
+    </div>
+
+    <div class="courses">
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-101</span>
+                <span>Foundation</span>
+            </div>
+            <h3>PLC Programming Foundations</h3>
+            <p class="course-desc">Two parallel streams in one classroom &mdash; Siemens TIA Portal (S7-1500) and Rockwell Studio 5000 (CompactLogix). Engineers leave able to read, modify, and deploy structured PLC code on real hardware.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">5 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Foundation</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Ladder, FBD, ST &amp; SCL fundamentals</li>
+                <li>Tag &amp; data block design conventions</li>
+                <li>HMI integration &amp; basic alarming</li>
+                <li>Hands-on with real PLC trainers</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£2,100</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-201</span>
+                <span>Advanced</span>
+            </div>
+            <h3>PID Tuning Masterclass</h3>
+            <p class="course-desc">A rigorous, mathematics-light, methodology-first course on PID tuning for real industrial loops &mdash; from flow and pressure through to multi-variable temperature systems with significant dead time.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Process identification methods that work</li>
+                <li>Ziegler-Nichols, Lambda &amp; IMC tuning</li>
+                <li>Cascaded &amp; feedforward configurations</li>
+                <li>Live tuning on simulated &amp; physical loops</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,500</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-202</span>
+                <span>Advanced</span>
+            </div>
+            <h3>SCADA Development</h3>
+            <p class="course-desc">High-performance HMI design and SCADA development following ISA-101 principles. Hands-on labs across AVEVA, Ignition, and Codra Panorama with the focus on operator-effective interfaces.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">4 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Advanced</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>ISA-101 high-performance HMI principles</li>
+                <li>Screen hierarchy, navigation &amp; alarm management</li>
+                <li>Object-oriented SCADA development</li>
+                <li>Reporting, redundancy &amp; cyber considerations</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,850</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-301</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Functional Safety &amp; SIL</h3>
+            <p class="course-desc">Functional safety for control engineers &mdash; IEC 61508/61511 lifecycle, SIL determination, safety instrumented function design, and proof testing. Aligned to TÜV-style assessment expectations.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">4 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">In-person</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>IEC 61508 / 61511 safety lifecycle</li>
+                <li>SIL determination &amp; verification</li>
+                <li>Safety instrumented function design</li>
+                <li>Proof testing &amp; management of change</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£2,200</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-302</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Industrial Networking &amp; OT Cyber</h3>
+            <p class="course-desc">PROFINET, EtherNet/IP, OPC UA, and Sparkplug B in depth, alongside an honest treatment of the OT cyber landscape &mdash; segmentation, monitoring, and the IEC 62443 standards family.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Industrial Ethernet protocols compared</li>
+                <li>OPC UA modelling &amp; security</li>
+                <li>MQTT Sparkplug B for IIoT</li>
+                <li>IEC 62443: zones, conduits &amp; security levels</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,650</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+
+        <article class="course">
+            <div class="course-meta">
+                <span class="course-code">IA-303</span>
+                <span>Specialist</span>
+            </div>
+            <h3>Migration: Legacy to Modern PLCs</h3>
+            <p class="course-desc">The practical art of PLC migration &mdash; S5 to S7-1500, SLC-500 to ControlLogix, and similar journeys. STL-to-ladder conversion patterns, tag mapping, and rollback strategy.</p>
+            <div class="course-attrs">
+                <div class="course-attr"><div class="lbl">Duration</div><div class="val">3 days</div></div>
+                <div class="course-attr"><div class="lbl">Format</div><div class="val">Hybrid</div></div>
+                <div class="course-attr"><div class="lbl">Level</div><div class="val">Specialist</div></div>
+            </div>
+            <ul class="course-outline">
+                <li>Code analysis: STL, ladder, structured text</li>
+                <li>Tag mapping &amp; documentation strategies</li>
+                <li>FAT and SAT scripting for migrations</li>
+                <li>Phased cutover &amp; rollback planning</li>
+            </ul>
+            <div class="course-foot">
+                <div class="course-price"><span class="amt">£1,550</span><span class="per">/ delegate</span></div>
+                <a href="#enrol" class="course-cta">Enrol<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M7 3l3 3-3 3"/></svg></a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- ─── FORMATS ─── -->
+<section class="formats">
+    <div class="formats-inner">
+        <div class="formats-header">
+            <div>
+                <div class="eyebrow">Delivery</div>
+                <h2>Three ways to <em>learn.</em></h2>
+            </div>
+            <p>Every programme runs in three delivery formats. We work with you to find the one that fits your team&rsquo;s operating reality.</p>
+        </div>
+
+        <div class="formats-grid">
+            <div class="format-card">
+                <div class="num">01</div>
+                <h3>Public cohort</h3>
+                <p>Individual engineers join a scheduled cohort with peers from other organisations. Excellent for cross-industry perspective and networking. Runs quarterly from a central UK location.</p>
+            </div>
+            <div class="format-card">
+                <div class="num">02</div>
+                <h3>On-site team</h3>
+                <p>We deliver the programme at your facility with your engineers, using examples drawn from your processes and data. Most cost-effective for groups of 6 or more.</p>
+            </div>
+            <div class="format-card">
+                <div class="num">03</div>
+                <h3>Hybrid &amp; virtual</h3>
+                <p>Live virtual sessions with a dedicated facilitator, paired with hands-on practical labs and asynchronous coursework. Designed for teams distributed across sites or geographies.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-strip" id="enrol">
+    <h2>Ready to develop the <em>next generation</em> of engineering talent?</h2>
+    <p>Tell us about your team, the discipline you&rsquo;re prioritising, and your target timeline. We&rsquo;ll come back within two working days with a recommended programme.</p>
+    <a href="mailto:uzoeshijuliet@gmail.com?subject=SmartOpsTech Academy Enquiry" class="cta-strip-mail">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="14" height="10" rx="1"/>
+            <path d="M2 5l7 5 7-5"/>
+        </svg>
+        uzoeshijuliet@gmail.com
+    </a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">
+                    <svg viewBox="0 0 26 26" fill="none">
+                        <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#B08940" stroke-width="1.8" fill="none"/>
+                        <path d="M13 8 L18 13 L13 18 L8 13 Z" fill="#B08940"/>
+                    </svg>
+                </span>
+                <span>Smart<em style="color:#B08940">Ops</em>Tech</span>
+            </a>
+            <p>Transforming industrial operations through intelligent automation, applied AI, and a respect for the operators who actually run the plant.</p>
+        </div>
+        <div>
+            <h4>Tracks</h4>
+            <ul class="footer-links">
+                <li><a href="#track-pm">Project Management</a></li>
+                <li><a href="#track-ai">AI &amp; Data Science</a></li>
+                <li><a href="#track-sw">Software Development</a></li>
+                <li><a href="#track-ia">Industrial Automation</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Practice</h4>
+            <ul class="footer-links">
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#results">Case studies</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <ul class="footer-links">
+                <li><a href="mailto:uzoeshijuliet@gmail.com">uzoeshijuliet@gmail.com</a></li>
+                <li><a href="https://github.com/Omabel212" target="_blank" rel="noopener">github.com/Omabel212</a></li>
+                <li><a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 SmartOpsTech. All rights reserved.</span>
+        <span>Based in the United Kingdom &middot; Engagements worldwide</span>
+    </div>
+</footer>
+
+<script>
+(function(){
+    'use strict';
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive: true });
+
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e){
+            const id = this.getAttribute('href');
+            if (id === '#' || id.length < 2) return;
+            const target = document.querySelector(id);
+            if (!target) return;
+            e.preventDefault();
+            const top = target.getBoundingClientRect().top + window.scrollY - 100;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    });
+
+    const reveals = document.querySelectorAll('.track, .course, .format-card');
+    reveals.forEach(el => el.classList.add('reveal'));
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                obs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => obs.observe(el));
+})();
+</script>
+</body>
+</html>
