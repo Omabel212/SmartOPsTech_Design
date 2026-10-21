@@ -24,67 +24,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --paper: #F6F2EA;
-            --paper-deep: #EDE6D6;
-            --paper-ivory: #FBF8F2;
-            --surface: #FFFFFF;
-            --ink: #0E1217;
-            --ink-soft: #2A323D;
-            --ink-mid: #5A6471;
-            --ink-light: #8A9099;
-            --line: #E2DBC9;
-            --line-strong: #C9C0AC;
-            --teal: #0F4C5C;
-            --teal-deep: #0A3540;
-            --teal-soft: rgba(15, 76, 92, 0.07);
-            --teal-line: rgba(15, 76, 92, 0.18);
-            --gold: #B08940;
-            --rust: #A04A2A;
-            --moss: #4A6A3F;
-            --font-display: 'Fraunces', 'Times New Roman', serif;
-            --font-body: 'Inter Tight', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body {
-            font-family: var(--font-body);
-            background: var(--paper);
-            color: var(--ink);
-            line-height: 1.65;
-            font-weight: 400;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            pointer-events: none; z-index: 100;
-            opacity: 0.35; mix-blend-mode: multiply;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-        }
-        ::selection { background: var(--teal); color: var(--paper-ivory); }
-        a { color: inherit; text-decoration: none; }
-        button { font-family: inherit; cursor: pointer; }
-
-        /* ─── NAV ─── */
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: all 0.4s var(--ease); padding: 20px 40px; }
-        .nav.scrolled { background: rgba(246, 242, 234, 0.85); backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1); border-bottom: 1px solid var(--line); padding: 14px 40px; }
-        .nav-inner { max-width: 1320px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--ink); }
-        .logo-mark { display: inline-block; width: 26px; height: 26px; position: relative; top: 3px; }
-        .logo em { font-style: italic; font-weight: 500; color: var(--teal); }
-        .nav-links { display: flex; list-style: none; gap: 4px; align-items: center; }
-        .nav-links a { padding: 10px 16px; font-size: 0.85rem; font-weight: 500; color: var(--ink-soft); border-radius: 999px; transition: all 0.25s var(--ease); }
-        .nav-links a:hover { color: var(--teal); background: var(--teal-soft); }
-        .nav-links a.active { color: var(--teal); background: var(--teal-soft); }
-        .nav-cta { margin-left: 12px; padding: 10px 22px !important; background: var(--ink) !important; color: var(--paper-ivory) !important; border-radius: 999px; transition: all 0.3s var(--ease) !important; }
-        .nav-cta:hover { background: var(--teal) !important; transform: translateY(-1px); }
-        .nav-toggle { display: none; background: none; border: none; padding: 8px; color: var(--ink); }
-
         /* ─── HERO ─── */
         .hero {
             position: relative;
@@ -345,24 +286,6 @@
         .btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
 
         /* ─── FOOTER ─── */
-        .footer { background: var(--ink); color: rgba(251, 248, 242, 0.7); padding: 80px 40px 40px; }
-        .footer-inner { max-width: 1320px; margin: 0 auto; }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1fr;
-            gap: 56px;
-            padding-bottom: 56px;
-            border-bottom: 1px solid rgba(251, 248, 242, 0.1);
-        }
-        .footer-brand { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-size: 1.45rem; color: var(--paper-ivory); margin-bottom: 16px; }
-        .footer-brand em { font-style: italic; color: var(--gold); }
-        .footer-tag { font-size: 0.88rem; line-height: 1.6; max-width: 320px; }
-        .footer h5 { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251, 248, 242, 0.5); margin-bottom: 20px; }
-        .footer ul { list-style: none; }
-        .footer ul li { margin-bottom: 10px; font-size: 0.92rem; }
-        .footer ul a { color: rgba(251, 248, 242, 0.75); transition: color 0.2s var(--ease); }
-        .footer ul a:hover { color: var(--gold); }
-        .footer-bottom { padding-top: 32px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; color: rgba(251, 248, 242, 0.45); }
 
         @media (max-width: 1024px) {
             .featured { grid-template-columns: 1fr; padding: 48px 32px; gap: 32px; }
@@ -371,23 +294,8 @@
             .post-date, .post-tag { grid-column: 1 / -1; justify-self: start; }
             .post-arrow { justify-self: end; grid-row: 1; }
             .cta-inner { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-            .nav { padding: 16px 24px; }
-            .nav.scrolled { padding: 12px 24px; }
             .hero { padding: 140px 24px 64px; }
             .section { padding: 64px 24px; }
-        }
-        @media (max-width: 680px) {
-            .nav-links { display: none; }
-            .nav-links.open {
-                display: flex; flex-direction: column;
-                position: absolute; top: 100%; left: 24px; right: 24px;
-                background: var(--paper-ivory); border: 1px solid var(--line);
-                border-radius: 16px; padding: 16px; gap: 4px;
-            }
-            .nav-toggle { display: block; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; gap: 16px; }
         }
     </style>
 </head>
@@ -396,11 +304,11 @@
 <!-- ─── NAV ─── -->
 <nav class="nav" id="nav">
     <div class="nav-inner">
-        <a href="index.html" class="logo">
+        <a href="index.html#home" class="logo">
             <span class="logo-mark">
-                <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--teal)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg viewBox="0 0 26 26" fill="none">
+                    <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#0F4C5C" stroke-width="1.8" fill="none"/>
+                    <path d="M13 8 L18 13 L13 18 L8 13 Z" fill="#0F4C5C"/>
                 </svg>
             </span>
             <span>Smart<em>Ops</em>Tech</span>
@@ -413,7 +321,7 @@
             <li><a href="index.html#research">Research</a></li>
             <li><a href="blog.html" class="active">Writing</a></li>
             <li><a href="index.html#about">About</a></li>
-            <li><a href="mailto:uzoeshijuliet@gmail.com" class="nav-cta">Get in touch</a></li>
+            <li><a href="index.html#contact" class="nav-cta">Get in touch</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
@@ -574,50 +482,51 @@
 
 <!-- ─── FOOTER ─── -->
 <footer class="footer">
-    <div class="footer-inner">
-        <div class="footer-grid">
-            <div>
-                <div class="footer-brand">
-                    <span style="display:inline-block;width:22px;height:22px;position:relative;top:2px;">
-                        <svg viewBox="0 0 26 26" fill="none">
-                            <circle cx="13" cy="13" r="12" stroke="rgba(251,248,242,0.9)" stroke-width="1.5"/>
-                            <path d="M6 13 L11 13 L13 8 L15 18 L17 13 L20 13" stroke="var(--gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                    <span>Smart<em>Ops</em>Tech</span>
-                </div>
-                <p class="footer-tag">Industrial intelligence for the next generation of smart manufacturing &mdash; built from real plant engineering, not theory.</p>
-            </div>
-            <div>
-                <h5>Explore</h5>
-                <ul>
-                    <li><a href="index.html#projects">Projects</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="training.html">Training</a></li>
-                    <li><a href="index.html#research">Research</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5>Writing</h5>
-                <ul>
-                    <li><a href="blog.html">All posts</a></li>
-                    <li><a href="blog-ai-control-systems.html">AI &amp; control systems</a></li>
-                    <li><a href="index.html#research">Working papers</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5>Contact</h5>
-                <ul>
-                    <li><a href="mailto:uzoeshijuliet@gmail.com">uzoeshijuliet@gmail.com</a></li>
-                    <li><a href="https://github.com/Omabel212" target="_blank" rel="noopener">GitHub</a></li>
-                    <li><a href="https://www.linkedin.com/in/juliet-uzoeshi-546a471b1" target="_blank" rel="noopener">LinkedIn</a></li>
-                </ul>
-            </div>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="index.html#home" class="logo">
+                <span class="logo-mark">
+                    <svg viewBox="0 0 26 26" fill="none">
+                        <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#B08940" stroke-width="1.8" fill="none"/>
+                        <path d="M13 8 L18 13 L13 18 L8 13 Z" fill="#B08940"/>
+                    </svg>
+                </span>
+                <span>Smart<em style="color:#B08940">Ops</em>Tech</span>
+            </a>
+            <p>Transforming industrial operations through intelligent automation, applied AI, and a respect for the operators who actually run the plant.</p>
         </div>
-        <div class="footer-bottom">
-            <span>© 2026 SmartOpsTech</span>
-            <span>Made in Chesterfield, UK</span>
+        <div>
+            <h4>Services</h4>
+            <ul class="footer-links">
+                <li><a href="index.html#services">Control systems audit</a></li>
+                <li><a href="index.html#services">AI integration</a></li>
+                <li><a href="index.html#services">System design &amp; build</a></li>
+                <li><a href="index.html#services">Engineering retainer</a></li>
+                <li><a href="training.html">Professional training</a></li>
+            </ul>
         </div>
+        <div>
+            <h4>Practice</h4>
+            <ul class="footer-links">
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#results">Case studies</a></li>
+                <li><a href="index.html#technologies">Technology stack</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="training.html">Academy</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <ul class="footer-links">
+                <li><a href="mailto:uzoeshijuliet@gmail.com">uzoeshijuliet@gmail.com</a></li>
+                <li><a href="https://github.com/Omabel212" target="_blank" rel="noopener">github.com/Omabel212</a></li>
+                <li><a href="https://www.linkedin.com/in/juliet-uzoeshi-546a471b1" target="_blank" rel="noopener">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 SmartOpsTech. All rights reserved.</span>
+        <span>Based in the United Kingdom &middot; Engagements worldwide</span>
     </div>
 </footer>
 

@@ -24,155 +24,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
         :root {
-            --paper: #F6F2EA;
-            --paper-deep: #EDE6D6;
-            --paper-ivory: #FBF8F2;
-            --surface: #FFFFFF;
-
-            --ink: #0E1217;
-            --ink-soft: #2A323D;
-            --ink-mid: #5A6471;
-            --ink-light: #8A9099;
-
-            --line: #E2DBC9;
-            --line-strong: #C9C0AC;
-
-            --teal: #0F4C5C;
-            --teal-deep: #0A3540;
-            --teal-soft: rgba(15, 76, 92, 0.07);
-            --teal-line: rgba(15, 76, 92, 0.18);
-
-            --gold: #B08940;
-            --gold-soft: rgba(176, 137, 64, 0.1);
-            --rust: #A04A2A;
-            --moss: #4A6A3F;
-
             /* track-specific accents */
             --t-pm: #6B4E8F;       /* aubergine */
             --t-ai: #0F4C5C;       /* teal */
             --t-sw: #B08940;       /* gold */
             --t-ia: #A04A2A;       /* burnt sienna */
-
-            --font-display: 'Fraunces', 'Times New Roman', serif;
-            --font-body: 'Inter Tight', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; font-size: 16px; }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--paper);
-            color: var(--ink);
-            line-height: 1.65;
-            font-weight: 400;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 100;
-            opacity: 0.35;
-            mix-blend-mode: multiply;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-        }
-
-        ::selection { background: var(--teal); color: var(--paper-ivory); }
-
-        a { color: inherit; text-decoration: none; }
-        button { font-family: inherit; cursor: pointer; }
 
         /* ─── LAYOUT ─── */
         .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
         .wrap-tight { max-width: 1140px; margin: 0 auto; padding: 0 40px; }
-
-        /* ─── NAVIGATION ─── */
-        .nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 50;
-            transition: all 0.4s var(--ease);
-            padding: 20px 40px;
-        }
-
-        .nav.scrolled {
-            background: rgba(246, 242, 234, 0.85);
-            backdrop-filter: blur(20px) saturate(1.1);
-            -webkit-backdrop-filter: blur(20px) saturate(1.1);
-            border-bottom: 1px solid var(--line);
-            padding: 14px 40px;
-        }
-
-        .nav-inner {
-            max-width: 1320px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-            font-family: var(--font-display);
-            font-weight: 600;
-            font-size: 1.45rem;
-            letter-spacing: -0.02em;
-            color: var(--ink);
-        }
-
-        .logo-mark { display: inline-block; width: 26px; height: 26px; position: relative; top: 3px; }
-        .logo em { font-style: italic; font-weight: 500; color: var(--teal); }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            padding: 10px 16px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--ink-soft);
-            border-radius: 999px;
-            transition: all 0.25s var(--ease);
-        }
-
-        .nav-links a:hover { color: var(--teal); background: var(--teal-soft); }
-        .nav-links a.active { color: var(--teal); background: var(--teal-soft); }
-
-        .nav-cta {
-            margin-left: 12px;
-            padding: 10px 22px !important;
-            background: var(--ink) !important;
-            color: var(--paper-ivory) !important;
-            border-radius: 999px;
-            transition: all 0.3s var(--ease) !important;
-        }
-
-        .nav-cta:hover { background: var(--teal) !important; transform: translateY(-1px); }
-
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            padding: 8px;
-            color: var(--ink);
-        }
 
         /* ─── HERO ─── */
         .hero {
@@ -718,91 +582,6 @@
             margin: 0 auto 40px;
         }
 
-        .cta-strip-mail {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 32px;
-            background: var(--ink);
-            color: var(--paper-ivory);
-            border-radius: 999px;
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s var(--ease);
-        }
-
-        .cta-strip-mail:hover {
-            background: var(--teal);
-            transform: translateY(-2px);
-            box-shadow: 0 16px 32px -12px rgba(15, 76, 92, 0.4);
-        }
-
-        /* ─── FOOTER ─── */
-        .footer {
-            padding: 72px 40px 32px;
-            background: var(--ink);
-            color: var(--paper-ivory);
-        }
-
-        .footer-grid {
-            max-width: 1320px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 60px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid rgba(251, 248, 242, 0.1);
-        }
-
-        .footer-brand .logo { color: var(--paper-ivory); margin-bottom: 20px; }
-        .footer-brand p {
-            color: rgba(251, 248, 242, 0.5);
-            font-size: 0.92rem;
-            max-width: 340px;
-            line-height: 1.7;
-        }
-
-        .footer h4 {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--gold);
-            margin-bottom: 22px;
-        }
-
-        .footer-links { list-style: none; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a {
-            color: rgba(251, 248, 242, 0.65);
-            font-size: 0.9rem;
-            transition: color 0.25s;
-        }
-        .footer-links a:hover { color: var(--gold); }
-
-        .footer-bottom {
-            max-width: 1320px;
-            margin: 24px auto 0;
-            padding-top: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.82rem;
-            color: rgba(251, 248, 242, 0.4);
-        }
-
-        /* ─── REVEAL ─── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* ─── RESPONSIVE ─── */
         @media (max-width: 1024px) {
             .wrap, .wrap-tight { padding: 0 24px; }
@@ -815,30 +594,11 @@
             .formats { padding: 90px 24px; }
             .formats-header { grid-template-columns: 1fr; gap: 24px; }
             .formats-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-            .nav { padding: 16px 24px; }
-            .nav.scrolled { padding: 12px 24px; }
             .tracks-nav { padding: 18px 24px; }
         }
 
         @media (max-width: 680px) {
-            .nav-links { display: none; }
-            .nav-links.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 24px; right: 24px;
-                background: var(--paper-ivory);
-                border: 1px solid var(--line);
-                border-radius: 16px;
-                padding: 16px;
-                gap: 4px;
-            }
-            .nav-toggle { display: block; }
             .course-attrs { grid-template-columns: 1fr 1fr; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .footer-bottom { flex-direction: column; gap: 12px; }
             .course-foot { flex-direction: column; align-items: stretch; }
             .course-cta { justify-content: center; }
         }
@@ -849,7 +609,7 @@
 <!-- ─── NAVIGATION ─── -->
 <nav class="nav" id="nav">
     <div class="nav-inner">
-        <a href="index.html" class="logo">
+        <a href="index.html#home" class="logo">
             <span class="logo-mark">
                 <svg viewBox="0 0 26 26" fill="none">
                     <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#0F4C5C" stroke-width="1.8" fill="none"/>
@@ -866,7 +626,7 @@
             <li><a href="index.html#research">Research</a></li>
             <li><a href="blog.html">Writing</a></li>
             <li><a href="index.html#about">About</a></li>
-            <li><a href="#enrol" class="nav-cta">Enrol</a></li>
+            <li><a href="index.html#contact" class="nav-cta">Get in touch</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
@@ -1511,7 +1271,7 @@
 <footer class="footer">
     <div class="footer-grid">
         <div class="footer-brand">
-            <a href="index.html" class="logo">
+            <a href="index.html#home" class="logo">
                 <span class="logo-mark">
                     <svg viewBox="0 0 26 26" fill="none">
                         <path d="M13 2 L24 13 L13 24 L2 13 Z" stroke="#B08940" stroke-width="1.8" fill="none"/>
@@ -1523,21 +1283,23 @@
             <p>Transforming industrial operations through intelligent automation, applied AI, and a respect for the operators who actually run the plant.</p>
         </div>
         <div>
-            <h4>Tracks</h4>
+            <h4>Services</h4>
             <ul class="footer-links">
-                <li><a href="#track-pm">Project Management</a></li>
-                <li><a href="#track-ai">AI &amp; Data Science</a></li>
-                <li><a href="#track-sw">Software Development</a></li>
-                <li><a href="#track-ia">Industrial Automation</a></li>
+                <li><a href="index.html#services">Control systems audit</a></li>
+                <li><a href="index.html#services">AI integration</a></li>
+                <li><a href="index.html#services">System design &amp; build</a></li>
+                <li><a href="index.html#services">Engineering retainer</a></li>
+                <li><a href="training.html">Professional training</a></li>
             </ul>
         </div>
         <div>
             <h4>Practice</h4>
             <ul class="footer-links">
                 <li><a href="index.html#projects">Projects</a></li>
-                <li><a href="index.html#services">Services</a></li>
                 <li><a href="index.html#results">Case studies</a></li>
+                <li><a href="index.html#technologies">Technology stack</a></li>
                 <li><a href="index.html#about">About</a></li>
+                <li><a href="training.html">Academy</a></li>
             </ul>
         </div>
         <div>
