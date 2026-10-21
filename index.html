@@ -968,71 +968,6 @@
             opacity: 1;
             transform: translateX(3px);
         }
-
-        /* ─── TECHNOLOGIES ─── */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--line);
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .tech-block {
-            padding: 36px 32px;
-            background: var(--paper-ivory);
-            transition: background 0.3s var(--ease);
-        }
-
-        .tech-block:hover {
-            background: var(--surface);
-        }
-
-        .tech-block h3 {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 22px;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .tech-block h3::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: var(--teal);
-            border-radius: 2px;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            list-style: none;
-        }
-
-        .tech-tags li {
-            padding: 6px 14px;
-            background: var(--paper);
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: var(--ink-soft);
-            transition: all 0.25s var(--ease);
-        }
-
-        .tech-tags li:hover {
-            background: var(--teal);
-            color: var(--paper-ivory);
-            border-color: var(--teal);
-        }
-
         /* ─── RESULTS ─── */
         .results-grid {
             display: grid;
@@ -1243,6 +1178,84 @@
             margin: 0 auto 40px;
         }
 
+        /* ─── MERGED SECTIONS ─── */
+        .subsection-title {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--gold);
+            margin-bottom: 28px;
+        }
+
+        .work-block + .work-block,
+        .insights-block + .insights-block {
+            margin-top: 96px;
+        }
+
+        .projects-grid.collapsed .project-card.extra {
+            display: none;
+        }
+
+        .projects-more {
+            display: flex;
+            justify-content: center;
+            margin-top: 48px;
+        }
+
+        .projects-more[hidden] { display: none; }
+
+        .expertise-tools {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        .expertise-tools h4 {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--ink-light);
+            margin-bottom: 12px;
+        }
+
+        .expertise-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .expertise-tags span {
+            padding: 4px 10px;
+            background: var(--paper-ivory);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--ink-soft);
+        }
+
+        .section .training-teaser {
+            padding: 0;
+            margin-top: 64px;
+        }
+
+        .insights-block .pub-grid {
+            margin-top: 0;
+        }
+
+        .insights-block.writing-teaser {
+            padding: 0;
+            background: none;
+        }
+
+        .insights-block .writing-teaser-inner {
+            padding: 64px 0 0;
+        }
+
         /* ─── RESPONSIVE ─── */
         @media (max-width: 1024px) {
             .wrap, .wrap-tight { padding: 0 24px; }
@@ -1254,7 +1267,6 @@
             .expertise-grid { grid-template-columns: repeat(2, 1fr); }
             .projects-grid { grid-template-columns: repeat(2, 1fr); }
             .services-grid { grid-template-columns: 1fr; }
-            .tech-grid { grid-template-columns: 1fr 1fr; }
             .results-grid { grid-template-columns: 1fr; }
             .about-layout { grid-template-columns: 1fr; gap: 48px; }
             .training-teaser { padding: 0 24px; }
@@ -1269,7 +1281,6 @@
         @media (max-width: 680px) {
             .expertise-grid { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
-            .tech-grid { grid-template-columns: 1fr; }
             .credentials-list { grid-template-columns: 1fr; }
             .training-pillars { grid-template-columns: 1fr; }
             .hero-strip { grid-template-columns: 1fr; }
@@ -1293,11 +1304,10 @@
         </a>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html#expertise">Expertise</a></li>
-            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#work">Work</a></li>
             <li><a href="index.html#services">Services</a></li>
-            <li><a href="training.html">Training</a></li>
-            <li><a href="index.html#research">Research</a></li>
-            <li><a href="blog.html">Writing</a></li>
+            <li><a href="training.html">Academy</a></li>
+            <li><a href="index.html#insights">Insights</a></li>
             <li><a href="index.html#about">About</a></li>
             <li><a href="index.html#contact" class="nav-cta">Get in touch</a></li>
         </ul>
@@ -1330,7 +1340,7 @@
         <aside class="hero-side">
             <p class="hero-side-desc">A specialist consultancy designing intelligent control systems for modern manufacturing &mdash; bridging classical engineering with applied AI to deliver measurable plant performance.</p>
             <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">
+                <a href="#work" class="btn btn-primary">
                     See our work
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M2 7h10M8 3l4 4-4 4"/>
@@ -1369,10 +1379,10 @@
                 <div class="section-eyebrow"><span class="num">01</span> Capabilities</div>
                 <h2 class="section-title">Four disciplines,<br/><em>one engineering practice.</em></h2>
             </div>
-            <p class="section-lede">We unify the rigour of classical control theory with applied machine learning &mdash; one team handling everything from PID tuning to neural model predictive control.</p>
+            <p class="section-lede">We unify the rigour of classical control theory with applied machine learning &mdash; one team handling everything from PID tuning to neural model predictive control, on a pragmatic stack of vendor platforms and open-source tools.</p>
         </div>
 
-        <div class="expertise-grid">
+        <div class="expertise-grid" id="technologies">
             <article class="expertise-card">
                 <div class="idx">/01</div>
                 <svg class="icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1388,6 +1398,10 @@
                     <li>State-space methods</li>
                     <li>Cascaded &amp; feedforward loops</li>
                 </ul>
+                <div class="expertise-tools">
+                    <h4>Tools</h4>
+                    <div class="expertise-tags"><span>MATLAB / Simulink</span><span>Python Control</span><span>LabVIEW</span><span>GNU Octave</span><span>Scilab</span></div>
+                </div>
             </article>
 
             <article class="expertise-card">
@@ -1406,6 +1420,10 @@
                     <li>Computer vision QC</li>
                     <li>Reinforcement learning</li>
                 </ul>
+                <div class="expertise-tools">
+                    <h4>Tools</h4>
+                    <div class="expertise-tags"><span>PyTorch</span><span>TensorFlow / Keras</span><span>scikit-learn</span><span>XGBoost</span><span>OpenCV</span><span>LangChain</span></div>
+                </div>
             </article>
 
             <article class="expertise-card">
@@ -1422,6 +1440,10 @@
                     <li>OPC UA, Modbus, MQTT</li>
                     <li>Edge AI deployment</li>
                 </ul>
+                <div class="expertise-tools">
+                    <h4>Tools</h4>
+                    <div class="expertise-tags"><span>Siemens TIA Portal</span><span>Rockwell Studio 5000</span><span>Beckhoff TwinCAT 3</span><span>Codra Panorama</span><span>AVEVA / Wonderware</span><span>OPC UA</span><span>Modbus TCP / RTU</span><span>MQTT / Sparkplug B</span><span>EtherNet/IP</span><span>PROFINET</span><span>ISA-95 / 88</span></div>
+                </div>
             </article>
 
             <article class="expertise-card">
@@ -1437,20 +1459,95 @@
                     <li>Statistical process control</li>
                     <li>KPI dashboarding</li>
                 </ul>
+                <div class="expertise-tools">
+                    <h4>Tools</h4>
+                    <div class="expertise-tags"><span>InfluxDB</span><span>TimescaleDB</span><span>Grafana</span><span>Apache Kafka</span><span>Power BI</span><span>NVIDIA Jetson</span><span>Siemens IOT2050</span><span>AWS IoT Greengrass</span><span>Azure IoT Edge</span><span>Docker</span></div>
+                </div>
             </article>
         </div>
     </div>
 </section>
 
-<!-- ─── PROJECTS — GROUPED ─── -->
-<section class="section" id="projects">
+<!-- ─── WORK — CASE STUDIES + PROJECTS ─── -->
+<section class="section" id="work">
     <div class="wrap">
         <div class="section-header center">
-            <div class="section-eyebrow"><span class="num">02</span> Selected projects</div>
-            <h2 class="section-title">Work, grouped by <em>discipline.</em></h2>
-            <p class="section-lede">Engagements across project management, AI &amp; data science, industrial automation, and software development &mdash; spanning food &amp; beverage, lime production, logistics, and process manufacturing.</p>
+            <div class="section-eyebrow"><span class="num">02</span> Selected work</div>
+            <h2 class="section-title">Numbers that <em>cleared</em> client audits.</h2>
+            <p class="section-lede">Four case studies with every figure verified by the client's own historians, OEE systems, or financial reporting &mdash; then selected engagements across project management, AI &amp; data science, industrial automation, and software development.</p>
         </div>
 
+        <div class="work-block" id="results">
+            <h3 class="subsection-title">Case studies</h3>
+            <div class="results-grid">
+                <article class="result-card">
+                    <div class="result-industry"><span>Chemical Manufacturing</span><span class="year">&apos;25</span></div>
+                    <h3>Reactor temperature stabilisation</h3>
+                    <p class="result-desc">Cascade PID with an ML-driven feedforward layer eliminated 30-year-old quality issues caused by feed-stock variability.</p>
+                    <div class="result-metrics">
+                        <div class="result-metric">
+                            <div class="v" data-count="-67">0%</div>
+                            <div class="l">Temperature variance</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="v" data-count="98.5" data-suffix="%">0</div>
+                            <div class="l">Quality consistency</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <div class="result-industry"><span>Food &amp; Beverage</span><span class="year">&apos;25</span></div>
+                    <h3>Pasteurisation energy MPC</h3>
+                    <p class="result-desc">Model Predictive Control with an embedded energy objective reduced steam draw across four pasteurisation lines.</p>
+                    <div class="result-metrics">
+                        <div class="result-metric">
+                            <div class="v" data-count="-34">0%</div>
+                            <div class="l">Energy reduction</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="v" data-prefix="£" data-count="47" data-suffix="k">0</div>
+                            <div class="l">Annual savings</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <div class="result-industry"><span>Automotive Components</span><span class="year">&apos;24</span></div>
+                    <h3>Predictive maintenance rollout</h3>
+                    <p class="result-desc">AI-powered failure prediction replaced calendar-based PM on critical rotating assets across three shifts.</p>
+                    <div class="result-metrics">
+                        <div class="result-metric">
+                            <div class="v" data-count="-89">0%</div>
+                            <div class="l">Unplanned downtime</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="v" data-count="15">0</div>
+                            <div class="l">Critical failures averted</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <div class="result-industry"><span>Water Treatment</span><span class="year">&apos;26</span></div>
+                    <h3>Multi-variable dosing automation</h3>
+                    <p class="result-desc">Closed-loop control of three chemical dosing skids using real-time turbidity and pH feedback &mdash; replacing manual operator adjustments.</p>
+                    <div class="result-metrics">
+                        <div class="result-metric">
+                            <div class="v" data-count="-41">0%</div>
+                            <div class="l">Chemical usage</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="v" data-count="99.8" data-suffix="%">0</div>
+                            <div class="l">Compliance window</div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="work-block" id="projects">
+            <h3 class="subsection-title">Projects</h3>
         <div class="projects-tabs">
             <button class="projects-tab active" data-filter="all">All</button>
             <button class="projects-tab" data-filter="pm">Project Management</button>
@@ -1459,7 +1556,7 @@
             <button class="projects-tab" data-filter="sw">Software Development</button>
         </div>
 
-        <div class="projects-grid">
+        <div class="projects-grid collapsed" id="projectsGrid">
 
             <!-- AI & Data Science -->
             <article class="project-card show" data-cat="ai">
@@ -1471,7 +1568,7 @@
                     <span class="project-stat">12 recipes</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ai">
+            <article class="project-card show extra" data-cat="ai">
                 <div class="project-meta"><span class="project-cat">AI / Data Science</span><span>2025</span></div>
                 <h3>Industrial Anomaly Detection Engine</h3>
                 <p class="project-desc">Ensemble model (Isolation Forest + autoencoder) catching incipient faults on rotating equipment 4&ndash;6 hours before alarm thresholds trip.</p>
@@ -1480,16 +1577,7 @@
                     <span class="project-stat">14 assets</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ai">
-                <div class="project-meta"><span class="project-cat">AI / Data Science</span><span>2024</span></div>
-                <h3>Smart Maintenance Prediction</h3>
-                <p class="project-desc">Random Forest classifier and Isolation Forest hybrid driving a predictive maintenance schedule from vibration, temperature, and current signatures.</p>
-                <div>
-                    <span class="project-stat gold">&minus;89% downtime</span>
-                    <span class="project-stat">15 failures averted</span>
-                </div>
-            </article>
-            <article class="project-card show" data-cat="ai">
+            <article class="project-card show extra" data-cat="ai">
                 <div class="project-meta"><span class="project-cat">AI / Data Science</span><span>2025</span></div>
                 <h3>ProcessMind RAG Platform</h3>
                 <p class="project-desc">Retrieval-augmented assistant grounding LLM responses in P&amp;IDs, FDS documents, and decades of plant manuals &mdash; with citation traceability.</p>
@@ -1516,7 +1604,7 @@
                     <span class="project-stat">24h horizon</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ai">
+            <article class="project-card show extra" data-cat="ai">
                 <div class="project-meta"><span class="project-cat">AI / Data Science</span><span>2025</span></div>
                 <h3>Soft Sensor for Crusher Throughput</h3>
                 <p class="project-desc">Gradient-boosted model estimating tonnes-per-hour from drive currents, vibration, and feed dynamics where the physical weightometer was unreliable.</p>
@@ -1525,7 +1613,7 @@
                     <span class="project-stat">&plusmn;2% drift</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ai">
+            <article class="project-card show extra" data-cat="ai">
                 <div class="project-meta"><span class="project-cat">AI / Data Science</span><span>2026</span></div>
                 <h3>Quality Drift Early-Warning</h3>
                 <p class="project-desc">Multivariate SPC and autoencoder system flagging slow product-quality drift on a petrochemical reactor hours before any spec breach.</p>
@@ -1536,7 +1624,7 @@
             </article>
 
             <!-- Industrial Automation -->
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2026</span></div>
                 <h3>Brewery Fermentation Control</h3>
                 <p class="project-desc">TIA Portal redesign of a 14-tank fermentation profile with cascaded jacket cooling, recipe-driven set-points, and clean termination curves.</p>
@@ -1545,7 +1633,7 @@
                     <span class="project-stat">14 vessels</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2025</span></div>
                 <h3>WWTP SCADA Modernisation</h3>
                 <p class="project-desc">Migration from a legacy Wonderware estate to AVEVA System Platform for a regional water treatment site, with full EEMUA 191 alarm rationalisation.</p>
@@ -1572,7 +1660,7 @@
                     <span class="project-stat">1 kiln line</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2026</span></div>
                 <h3>Robotic Cell PLC Coordination</h3>
                 <p class="project-desc">Beckhoff TwinCAT 3 coordination of three FANUC robots in a press-tending cell, with EtherCAT-based safety and a deterministic 1 ms cycle.</p>
@@ -1581,7 +1669,7 @@
                     <span class="project-stat gold">99.6% uptime</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2025</span></div>
                 <h3>Pharma Cleanroom HVAC</h3>
                 <p class="project-desc">Pressure-cascade and recipe-driven HVAC control for a sterile fill-finish line, validated to GAMP 5 Category 4 with full 21 CFR Part 11 audit trail.</p>
@@ -1590,7 +1678,7 @@
                     <span class="project-stat">GAMP 5 Cat 4</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2024</span></div>
                 <h3>Tank Farm Inventory Control</h3>
                 <p class="project-desc">OPC UA radar-level integration across a 24-tank fuel farm, with custody-transfer reconciliation logic and operator-facing volume dashboards.</p>
@@ -1599,7 +1687,7 @@
                     <span class="project-stat gold">0.1% reconciliation</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2026</span></div>
                 <h3>Substation IEC 61850 Integration</h3>
                 <p class="project-desc">Bay-level GOOSE messaging and MMS reporting across four substation bays at a private generation site, brought into a central control HMI.</p>
@@ -1609,7 +1697,7 @@
                 </div>
             </article>
 
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2025</span></div>
                 <h3>Form-Fill-Seal Packaging Line</h3>
                 <p class="project-desc">Beckhoff TwinCAT 3 recipe handling for a high-speed FFS bagging line, with cross-coupled checkweigher and metal-detector handshakes and a full reject-lane audit trail.</p>
@@ -1619,7 +1707,7 @@
                 </div>
             </article>
 
-            <article class="project-card show" data-cat="ia">
+            <article class="project-card show extra" data-cat="ia">
                 <div class="project-meta"><span class="project-cat">Industrial Automation</span><span>2024</span></div>
                 <h3>HTST Pasteurisation Control</h3>
                 <p class="project-desc">Cascade temperature loop on an HTST pasteuriser with flow-diversion-valve sequencing per regulatory hold-tube logic, plus full divert-event reporting to the historian.</p>
@@ -1658,7 +1746,7 @@
                     <span class="project-stat gold">Zero carry-over</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="pm">
+            <article class="project-card show extra" data-cat="pm">
                 <div class="project-meta"><span class="project-cat">Project Management</span><span>2026</span></div>
                 <h3>CDM Engineering Coordination</h3>
                 <p class="project-desc">Principal designer interface for a brownfield process upgrade under CDM 2015: designer risk assessments, hazard log, and stage-gate sign-off package.</p>
@@ -1667,7 +1755,7 @@
                     <span class="project-stat">Brownfield programme</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="pm">
+            <article class="project-card show extra" data-cat="pm">
                 <div class="project-meta"><span class="project-cat">Project Management</span><span>2025</span></div>
                 <h3>ISA-88 Recipe Programme</h3>
                 <p class="project-desc">ISA-88 batch standard rollout across four production cells, covering the master/control/site recipe model, exception library, and operator training.</p>
@@ -1676,7 +1764,7 @@
                     <span class="project-stat">S88-aligned</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="pm">
+            <article class="project-card show extra" data-cat="pm">
                 <div class="project-meta"><span class="project-cat">Project Management</span><span>2026</span></div>
                 <h3>IEC 62443 Cyber Assessment</h3>
                 <p class="project-desc">Site-level IACS cybersecurity assessment per IEC 62443-3-2: zones-and-conduits diagram, SL-T determination, and a prioritised remediation backlog.</p>
@@ -1685,7 +1773,7 @@
                     <span class="project-stat">SL-T 2 baseline</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="pm">
+            <article class="project-card show extra" data-cat="pm">
                 <div class="project-meta"><span class="project-cat">Project Management</span><span>2025</span></div>
                 <h3>Migration Risk &amp; Validation Plan</h3>
                 <p class="project-desc">FMEA-driven migration strategy for legacy-to-modern PLC replacement on a 24/7 line, including dry-run protocol, rollback criteria, and validation matrix.</p>
@@ -1703,7 +1791,7 @@
                     <span class="project-stat">Concept → FEED</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="pm">
+            <article class="project-card show extra" data-cat="pm">
                 <div class="project-meta"><span class="project-cat">Project Management</span><span>2024</span></div>
                 <h3>HAZOP &amp; SIL Determination</h3>
                 <p class="project-desc">LOPA-supported HAZOP facilitation and SIL determination across twelve nodes on a thermal oxidiser, with a full safety requirements specification.</p>
@@ -1732,7 +1820,7 @@
                     <span class="project-stat">Docker-deployable</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="sw">
+            <article class="project-card show extra" data-cat="sw">
                 <div class="project-meta"><span class="project-cat">Software Development</span><span>2026</span></div>
                 <h3>OEE Calculation Microservice</h3>
                 <p class="project-desc">Containerised Python service computing real-time OEE from PLC tag streams across six production lines, pushing to InfluxDB and Grafana.</p>
@@ -1741,7 +1829,7 @@
                     <span class="project-stat gold">250ms recompute</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="sw">
+            <article class="project-card show extra" data-cat="sw">
                 <div class="project-meta"><span class="project-cat">Software Development</span><span>2025</span></div>
                 <h3>PLC Tag Naming Linter</h3>
                 <p class="project-desc">Static-analysis CLI that enforces ISA-style tag naming conventions across exported Studio 5000 .L5X files; integrates straight into a CI pipeline.</p>
@@ -1750,7 +1838,7 @@
                     <span class="project-stat">CI-integrated</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="sw">
+            <article class="project-card show extra" data-cat="sw">
                 <div class="project-meta"><span class="project-cat">Software Development</span><span>2026</span></div>
                 <h3>OPC UA Historian Bridge</h3>
                 <p class="project-desc">Lightweight Python bridge replicating OPC UA subscriptions into TimescaleDB, with deterministic backfill on disconnect and tag-level back-pressure.</p>
@@ -1759,7 +1847,7 @@
                     <span class="project-stat">1s scan rate</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="sw">
+            <article class="project-card show extra" data-cat="sw">
                 <div class="project-meta"><span class="project-cat">Software Development</span><span>2026</span></div>
                 <h3>Operator Shift Handover App</h3>
                 <p class="project-desc">FastAPI + React tool capturing shift-end events, alarm clusters, and operator commentary &mdash; with an LLM-generated summary of the last twelve hours.</p>
@@ -1777,7 +1865,7 @@
                     <span class="project-stat gold">Exactly-once</span>
                 </div>
             </article>
-            <article class="project-card show" data-cat="sw">
+            <article class="project-card show extra" data-cat="sw">
                 <div class="project-meta"><span class="project-cat">Software Development</span><span>2026</span></div>
                 <h3>Industrial RAG Toolkit</h3>
                 <p class="project-desc">Open-source-style Python library for industrial document RAG &mdash; bespoke chunkers for P&amp;IDs, FDS, and alarm rationalisation tables.</p>
@@ -1788,6 +1876,10 @@
             </article>
 
                 </div>
+        <div class="projects-more">
+            <button class="btn btn-outline" id="projectsToggle" data-total="34">See all 34 projects</button>
+        </div>
+        </div>
     </div>
 </section>
 
@@ -1870,318 +1962,188 @@
                 </div>
             </article>
         </div>
-    </div>
-</section>
 
-<!-- ─── TRAINING TEASER ─── -->
-<section class="training-teaser">
-    <div class="training-teaser-inner">
-        <div class="training-teaser-content">
-            <div class="eyebrow">SmartOpsTech Academy</div>
-            <h2>Train your team across four <em>career-defining</em> disciplines.</h2>
-            <p>Industry-recognised programmes built from real plant work &mdash; not textbook theory. Delivered in person, virtually, or as a hybrid cohort for your engineering team.</p>
-            <a href="training.html" class="btn btn-outline">
-                Explore training catalogue
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M2 7h10M8 3l4 4-4 4"/>
-                </svg>
-            </a>
-        </div>
-        <div class="training-pillars">
-            <div class="training-pillar">
-                <div class="training-pillar-num">/01</div>
-                <h4>Project Management</h4>
-            </div>
-            <div class="training-pillar">
-                <div class="training-pillar-num">/02</div>
-                <h4>AI &amp; Data Science</h4>
-            </div>
-            <div class="training-pillar">
-                <div class="training-pillar-num">/03</div>
-                <h4>Software Development</h4>
-            </div>
-            <div class="training-pillar">
-                <div class="training-pillar-num">/04</div>
-                <h4>Industrial Automation</h4>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ─── TECHNOLOGIES ─── -->
-<section class="section" id="technologies">
-    <div class="wrap">
-        <div class="section-header">
-            <div>
-                <div class="section-eyebrow"><span class="num">04</span> Technology stack</div>
-                <h2 class="section-title">Tools we <em>actually</em> use.</h2>
-            </div>
-            <p class="section-lede">A pragmatic stack &mdash; vendor platforms where they earn it, open-source where it gives leverage. Selected from a decade of production deployments.</p>
-        </div>
-
-        <div class="tech-grid">
-            <div class="tech-block">
-                <h3>Control engineering</h3>
-                <ul class="tech-tags">
-                    <li>MATLAB / Simulink</li><li>Python Control</li><li>LabVIEW</li><li>GNU Octave</li><li>Scilab</li>
-                </ul>
-            </div>
-            <div class="tech-block">
-                <h3>AI / ML frameworks</h3>
-                <ul class="tech-tags">
-                    <li>PyTorch</li><li>TensorFlow / Keras</li><li>scikit-learn</li><li>XGBoost</li><li>OpenCV</li><li>LangChain</li>
-                </ul>
-            </div>
-            <div class="tech-block">
-                <h3>Industrial platforms</h3>
-                <ul class="tech-tags">
-                    <li>Siemens TIA Portal</li><li>Rockwell Studio 5000</li><li>Beckhoff TwinCAT 3</li><li>Codra Panorama</li><li>AVEVA / Wonderware</li>
-                </ul>
-            </div>
-            <div class="tech-block">
-                <h3>Data &amp; observability</h3>
-                <ul class="tech-tags">
-                    <li>InfluxDB</li><li>TimescaleDB</li><li>Grafana</li><li>Apache Kafka</li><li>Power BI</li>
-                </ul>
-            </div>
-            <div class="tech-block">
-                <h3>Edge computing</h3>
-                <ul class="tech-tags">
-                    <li>NVIDIA Jetson</li><li>Siemens IOT2050</li><li>AWS IoT Greengrass</li><li>Azure IoT Edge</li><li>Docker</li>
-                </ul>
-            </div>
-            <div class="tech-block">
-                <h3>Protocols &amp; standards</h3>
-                <ul class="tech-tags">
-                    <li>OPC UA</li><li>Modbus TCP / RTU</li><li>MQTT / Sparkplug B</li><li>EtherNet/IP</li><li>PROFINET</li><li>ISA-95 / 88</li>
-                </ul>
+        <div class="training-teaser" id="academy">
+            <div class="training-teaser-inner">
+                <div class="training-teaser-content">
+                    <div class="eyebrow">SmartOpsTech Academy</div>
+                    <h2>Train your team across four <em>career-defining</em> disciplines.</h2>
+                    <p>Industry-recognised programmes built from real plant work &mdash; not textbook theory. Delivered in person, virtually, or as a hybrid cohort for your engineering team.</p>
+                    <a href="training.html" class="btn btn-outline">
+                        Explore training catalogue
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 7h10M8 3l4 4-4 4"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="training-pillars">
+                    <div class="training-pillar">
+                        <div class="training-pillar-num">/01</div>
+                        <h4>Project Management</h4>
+                    </div>
+                    <div class="training-pillar">
+                        <div class="training-pillar-num">/02</div>
+                        <h4>AI &amp; Data Science</h4>
+                    </div>
+                    <div class="training-pillar">
+                        <div class="training-pillar-num">/03</div>
+                        <h4>Software Development</h4>
+                    </div>
+                    <div class="training-pillar">
+                        <div class="training-pillar-num">/04</div>
+                        <h4>Industrial Automation</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ─── RESEARCH & PUBLICATIONS ─── -->
-<section class="section ivory" id="research">
+<!-- ─── INSIGHTS — RESEARCH + FIELD NOTES ─── -->
+<section class="section ivory" id="insights">
     <div class="wrap">
         <div class="section-header center">
-            <div class="section-eyebrow"><span class="num">05</span> Research &amp; publications</div>
+            <div class="section-eyebrow"><span class="num">04</span> Insights</div>
             <h2 class="section-title">Where the <em>thinking</em> gets written down.</h2>
-            <p class="section-lede">Working papers and applied research at the intersection of industrial control engineering and machine intelligence &mdash; written from the perspective of someone who has to defend it in front of an operator, not just a reviewer.</p>
+            <p class="section-lede">Working papers, applied research, and field notes at the intersection of industrial control engineering and machine intelligence &mdash; written from the perspective of someone who has to defend it in front of an operator, not just a reviewer.</p>
         </div>
 
-        <div class="pub-grid">
+        <div class="insights-block" id="research">
+            <h3 class="subsection-title">Research &amp; papers</h3>
+            <div class="pub-grid">
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status">Working paper</span></span>
-                    <span>2026</span>
-                </div>
-                <h3>Neural Network Assisted Model Predictive Control for <em>nonlinear industrial processes</em></h3>
-                <p class="pub-abstract">A hybrid MPC architecture that learns the residual between a first-principles process model and observed plant behaviour, retaining the stability guarantees of classical MPC while improving tracking on highly nonlinear regimes.</p>
-                <div class="pub-keys">
-                    <span>MPC</span>
-                    <span>Hybrid models</span>
-                    <span>Process control</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status">Working paper</span></span>
+                        <span>2026</span>
+                    </div>
+                    <h3>Neural Network Assisted Model Predictive Control for <em>nonlinear industrial processes</em></h3>
+                    <p class="pub-abstract">A hybrid MPC architecture that learns the residual between a first-principles process model and observed plant behaviour, retaining the stability guarantees of classical MPC while improving tracking on highly nonlinear regimes.</p>
+                    <div class="pub-keys">
+                        <span>MPC</span>
+                        <span>Hybrid models</span>
+                        <span>Process control</span>
+                    </div>
+                </article>
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status preprint">Preprint</span></span>
-                    <span>2025</span>
-                </div>
-                <h3>Digital Twin Predictive Safety Modelling for <em>process plants</em></h3>
-                <p class="pub-abstract">A reference framework for layering predictive safety analysis on top of a process digital twin &mdash; covering scenario generation, simulation-in-the-loop testing, and the boundary between safety analytics and the certified SIS.</p>
-                <div class="pub-keys">
-                    <span>Digital twin</span>
-                    <span>Functional safety</span>
-                    <span>SIL</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status preprint">Preprint</span></span>
+                        <span>2025</span>
+                    </div>
+                    <h3>Digital Twin Predictive Safety Modelling for <em>process plants</em></h3>
+                    <p class="pub-abstract">A reference framework for layering predictive safety analysis on top of a process digital twin &mdash; covering scenario generation, simulation-in-the-loop testing, and the boundary between safety analytics and the certified SIS.</p>
+                    <div class="pub-keys">
+                        <span>Digital twin</span>
+                        <span>Functional safety</span>
+                        <span>SIL</span>
+                    </div>
+                </article>
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status">Working paper</span></span>
-                    <span>2026</span>
-                </div>
-                <h3>AI-Augmented ISA-88 <em>batch optimisation</em></h3>
-                <p class="pub-abstract">How Bayesian optimisation and contextual bandits can sit cleanly above an ISA-88 recipe engine to tune set-points across master, control, and site recipe layers without breaking traceability or batch records.</p>
-                <div class="pub-keys">
-                    <span>ISA-88</span>
-                    <span>Batch process</span>
-                    <span>Bayesian opt.</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status">Working paper</span></span>
+                        <span>2026</span>
+                    </div>
+                    <h3>AI-Augmented ISA-88 <em>batch optimisation</em></h3>
+                    <p class="pub-abstract">How Bayesian optimisation and contextual bandits can sit cleanly above an ISA-88 recipe engine to tune set-points across master, control, and site recipe layers without breaking traceability or batch records.</p>
+                    <div class="pub-keys">
+                        <span>ISA-88</span>
+                        <span>Batch process</span>
+                        <span>Bayesian opt.</span>
+                    </div>
+                </article>
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status">Working paper</span></span>
-                    <span>2025</span>
-                </div>
-                <h3>AI Data Pipelines for <em>industrial automation</em>: a reference architecture</h3>
-                <p class="pub-abstract">A practitioner-focused architecture spanning sensor through historian through feature store through model serving &mdash; with explicit treatment of OPC UA semantics, time-alignment, and back-pressure under plant disturbances.</p>
-                <div class="pub-keys">
-                    <span>OPC UA</span>
-                    <span>MQTT</span>
-                    <span>MLOps</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status">Working paper</span></span>
+                        <span>2025</span>
+                    </div>
+                    <h3>AI Data Pipelines for <em>industrial automation</em>: a reference architecture</h3>
+                    <p class="pub-abstract">A practitioner-focused architecture spanning sensor through historian through feature store through model serving &mdash; with explicit treatment of OPC UA semantics, time-alignment, and back-pressure under plant disturbances.</p>
+                    <div class="pub-keys">
+                        <span>OPC UA</span>
+                        <span>MQTT</span>
+                        <span>MLOps</span>
+                    </div>
+                </article>
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status in-review">In review</span></span>
-                    <span>2026</span>
-                </div>
-                <h3>Hybrid Physics-AI Control for <em>intelligent industrial systems</em></h3>
-                <p class="pub-abstract">An argument and worked examples for control architectures that combine physics-based models with learned components &mdash; with an explicit framing of where in the stack each component is allowed to act.</p>
-                <div class="pub-keys">
-                    <span>Hybrid control</span>
-                    <span>Physics-informed</span>
-                    <span>Safety</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status in-review">In review</span></span>
+                        <span>2026</span>
+                    </div>
+                    <h3>Hybrid Physics-AI Control for <em>intelligent industrial systems</em></h3>
+                    <p class="pub-abstract">An argument and worked examples for control architectures that combine physics-based models with learned components &mdash; with an explicit framing of where in the stack each component is allowed to act.</p>
+                    <div class="pub-keys">
+                        <span>Hybrid control</span>
+                        <span>Physics-informed</span>
+                        <span>Safety</span>
+                    </div>
+                </article>
 
-            <article class="pub-card">
-                <div class="pub-meta">
-                    <span><span class="pub-status">Working paper</span></span>
-                    <span>2026</span>
-                </div>
-                <h3>Explainable AI for <em>smart manufacturing</em>: operator trust and audit trails</h3>
-                <p class="pub-abstract">A practical taxonomy of explainability techniques for industrial ML &mdash; SHAP, counterfactuals, attention maps &mdash; tied to specific operator-facing artefacts and regulatory audit requirements.</p>
-                <div class="pub-keys">
-                    <span>XAI</span>
-                    <span>Audit</span>
-                    <span>Operator UX</span>
-                </div>
-            </article>
+                <article class="pub-card">
+                    <div class="pub-meta">
+                        <span><span class="pub-status">Working paper</span></span>
+                        <span>2026</span>
+                    </div>
+                    <h3>Explainable AI for <em>smart manufacturing</em>: operator trust and audit trails</h3>
+                    <p class="pub-abstract">A practical taxonomy of explainability techniques for industrial ML &mdash; SHAP, counterfactuals, attention maps &mdash; tied to specific operator-facing artefacts and regulatory audit requirements.</p>
+                    <div class="pub-keys">
+                        <span>XAI</span>
+                        <span>Audit</span>
+                        <span>Operator UX</span>
+                    </div>
+                </article>
 
-        </div>
-
-        <p class="research-note">Selected drafts available on request. Several of these underpin the SmartOpsTech engineering approach &mdash; specifically how machine intelligence is layered on top of certified control without ever replacing it.</p>
-    </div>
-</section>
-
-<!-- ─── WRITING / INSIGHTS TEASER ─── -->
-<section class="writing-teaser" id="writing">
-    <div class="writing-teaser-inner">
-        <div>
-            <div class="eyebrow"><span style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.18em;">/06 &nbsp;&middot;&nbsp; Field notes</span></div>
-            <h2>Notes from the <em>plant floor.</em></h2>
-            <p class="lede">Essays, write-ups, and field notes on industrial AI, control systems, and the engineering practice that holds them together. Short reads, written for working engineers.</p>
-            <a href="blog.html" class="btn btn-outline" style="border-color: var(--ink); color: var(--ink);">
-                Read all posts
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M2 7h10M8 3l4 4-4 4"/>
-                </svg>
-            </a>
-        </div>
-        <div class="writing-posts">
-            <a href="blog-ai-control-systems.html" class="writing-card">
-                <div class="writing-date">26 May<br>2026</div>
-                <h4>Above the loop: where AI fits in an industrial control system</h4>
-                <span class="arrow">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M4 10h12M11 5l5 5-5 5"/>
-                    </svg>
-                </span>
-            </a>
-            <a href="blog.html#pid-migration" class="writing-card">
-                <div class="writing-date">Coming<br>soon</div>
-                <h4>What makes a PID migration actually risky</h4>
-                <span class="arrow">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M4 10h12M11 5l5 5-5 5"/>
-                    </svg>
-                </span>
-            </a>
-            <a href="blog.html#time-series" class="writing-card">
-                <div class="writing-date">Coming<br>soon</div>
-                <h4>Reading the plant floor: time-series are a language</h4>
-                <span class="arrow">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M4 10h12M11 5l5 5-5 5"/>
-                    </svg>
-                </span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- ─── RESULTS ─── -->
-<section class="section cream" id="results">
-    <div class="wrap">
-        <div class="section-header">
-            <div>
-                <div class="section-eyebrow"><span class="num">07</span> Outcomes</div>
-                <h2 class="section-title">Numbers that <em>cleared</em> client audits.</h2>
             </div>
-            <p class="section-lede">Selected outcomes from production engagements &mdash; every figure verified by the client's own historians, OEE systems, or financial reporting.</p>
+
+            <p class="research-note">Selected drafts available on request. Several of these underpin the SmartOpsTech engineering approach &mdash; specifically how machine intelligence is layered on top of certified control without ever replacing it.</p>
         </div>
 
-        <div class="results-grid">
-            <article class="result-card">
-                <div class="result-industry"><span>Chemical Manufacturing</span><span class="year">&apos;25</span></div>
-                <h3>Reactor temperature stabilisation</h3>
-                <p class="result-desc">Cascade PID with an ML-driven feedforward layer eliminated 30-year-old quality issues caused by feed-stock variability.</p>
-                <div class="result-metrics">
-                    <div class="result-metric">
-                        <div class="v" data-count="-67">0%</div>
-                        <div class="l">Temperature variance</div>
-                    </div>
-                    <div class="result-metric">
-                        <div class="v" data-count="98.5" data-suffix="%">0</div>
-                        <div class="l">Quality consistency</div>
-                    </div>
+        <div class="insights-block writing-teaser" id="writing">
+            <div class="writing-teaser-inner">
+                <div>
+                    <h3 class="subsection-title">Field notes</h3>
+                    <h2>Notes from the <em>plant floor.</em></h2>
+                    <p class="lede">Essays, write-ups, and field notes on industrial AI, control systems, and the engineering practice that holds them together. Short reads, written for working engineers.</p>
+                    <a href="blog.html" class="btn btn-outline" style="border-color: var(--ink); color: var(--ink);">
+                        Read all posts
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 7h10M8 3l4 4-4 4"/>
+                        </svg>
+                    </a>
                 </div>
-            </article>
-
-            <article class="result-card">
-                <div class="result-industry"><span>Food &amp; Beverage</span><span class="year">&apos;25</span></div>
-                <h3>Pasteurisation energy MPC</h3>
-                <p class="result-desc">Model Predictive Control with an embedded energy objective reduced steam draw across four pasteurisation lines.</p>
-                <div class="result-metrics">
-                    <div class="result-metric">
-                        <div class="v" data-count="-34">0%</div>
-                        <div class="l">Energy reduction</div>
-                    </div>
-                    <div class="result-metric">
-                        <div class="v" data-prefix="£" data-count="47" data-suffix="k">0</div>
-                        <div class="l">Annual savings</div>
-                    </div>
+                <div class="writing-posts">
+                    <a href="blog-ai-control-systems.html" class="writing-card">
+                        <div class="writing-date">26 May<br>2026</div>
+                        <h4>Above the loop: where AI fits in an industrial control system</h4>
+                        <span class="arrow">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 10h12M11 5l5 5-5 5"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="blog.html#pid-migration" class="writing-card">
+                        <div class="writing-date">Coming<br>soon</div>
+                        <h4>What makes a PID migration actually risky</h4>
+                        <span class="arrow">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 10h12M11 5l5 5-5 5"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="blog.html#time-series" class="writing-card">
+                        <div class="writing-date">Coming<br>soon</div>
+                        <h4>Reading the plant floor: time-series are a language</h4>
+                        <span class="arrow">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 10h12M11 5l5 5-5 5"/>
+                            </svg>
+                        </span>
+                    </a>
                 </div>
-            </article>
-
-            <article class="result-card">
-                <div class="result-industry"><span>Automotive Components</span><span class="year">&apos;24</span></div>
-                <h3>Predictive maintenance rollout</h3>
-                <p class="result-desc">AI-powered failure prediction replaced calendar-based PM on critical rotating assets across three shifts.</p>
-                <div class="result-metrics">
-                    <div class="result-metric">
-                        <div class="v" data-count="-89">0%</div>
-                        <div class="l">Unplanned downtime</div>
-                    </div>
-                    <div class="result-metric">
-                        <div class="v" data-count="15">0</div>
-                        <div class="l">Critical failures averted</div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="result-card">
-                <div class="result-industry"><span>Water Treatment</span><span class="year">&apos;26</span></div>
-                <h3>Multi-variable dosing automation</h3>
-                <p class="result-desc">Closed-loop control of three chemical dosing skids using real-time turbidity and pH feedback &mdash; replacing manual operator adjustments.</p>
-                <div class="result-metrics">
-                    <div class="result-metric">
-                        <div class="v" data-count="-41">0%</div>
-                        <div class="l">Chemical usage</div>
-                    </div>
-                    <div class="result-metric">
-                        <div class="v" data-count="99.8" data-suffix="%">0</div>
-                        <div class="l">Compliance window</div>
-                    </div>
-                </div>
-            </article>
+            </div>
         </div>
     </div>
 </section>
@@ -2190,7 +2152,7 @@
 <section class="section" id="about">
     <div class="wrap-tight">
         <div class="section-header center">
-            <div class="section-eyebrow"><span class="num">08</span> The practice</div>
+            <div class="section-eyebrow"><span class="num">05</span> The practice</div>
             <h2 class="section-title">Engineering, with <em>conviction.</em></h2>
         </div>
 
@@ -2286,11 +2248,12 @@
         <div>
             <h4>Practice</h4>
             <ul class="footer-links">
-                <li><a href="index.html#projects">Projects</a></li>
                 <li><a href="index.html#results">Case studies</a></li>
-                <li><a href="index.html#technologies">Technology stack</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#expertise">Technology stack</a></li>
+                <li><a href="index.html#research">Research</a></li>
+                <li><a href="blog.html">Writing</a></li>
                 <li><a href="index.html#about">About</a></li>
-                <li><a href="training.html">Academy</a></li>
             </ul>
         </div>
         <div>
@@ -2337,9 +2300,11 @@
         });
     });
 
-    // ─── PROJECTS FILTER ───
+    // ─── PROJECTS FILTER + SEE ALL ───
     const tabs = document.querySelectorAll('.projects-tab');
     const cards = document.querySelectorAll('.project-card');
+    const grid = document.getElementById('projectsGrid');
+    const more = document.getElementById('projectsToggle');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
@@ -2352,11 +2317,23 @@
                     c.classList.remove('show');
                 }
             });
+            // a discipline tab shows every project in it; "All" goes back to the featured set
+            grid.classList.toggle('collapsed', f === 'all');
+            more.parentElement.hidden = f !== 'all';
+            more.textContent = 'See all ' + more.dataset.total + ' projects';
         });
+    });
+    more.addEventListener('click', () => {
+        const collapsed = grid.classList.toggle('collapsed');
+        more.textContent = collapsed ? 'See all ' + more.dataset.total + ' projects' : 'Show fewer projects';
+        if (collapsed) {
+            const top = document.getElementById('projects').getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
     });
 
     // ─── REVEAL ON SCROLL ───
-    const reveals = document.querySelectorAll('.section, .expertise-card, .project-card, .service-card, .result-card, .tech-block, .credential, .industry-tag');
+    const reveals = document.querySelectorAll('.section, .expertise-card, .project-card, .service-card, .result-card, .credential, .industry-tag');
     reveals.forEach(el => el.classList.add('reveal'));
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
