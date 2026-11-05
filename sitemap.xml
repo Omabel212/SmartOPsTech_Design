@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>https://smartopstech.com/</loc>
-        <lastmod>2026-10-20</lastmod>
-    </url>
-    <url>
-        <loc>https://smartopstech.com/training.html</loc>
-        <lastmod>2026-10-20</lastmod>
-    </url>
-    <url>
-        <loc>https://smartopstech.com/blog.html</loc>
-        <lastmod>2026-10-20</lastmod>
-    </url>
-    <url>
-        <loc>https://smartopstech.com/blog-ai-control-systems.html</loc>
-        <lastmod>2026-10-20</lastmod>
-    </url>
+<url><loc>https://smartopstech.com/</loc></url>
+<url><loc>https://smartopstech.com/work.html</loc></url>
+<url><loc>https://smartopstech.com/research.html</loc></url>
+<url><loc>https://smartopstech.com/training.html</loc></url>
+<url><loc>https://smartopstech.com/blog.html</loc></url>
+<url><loc>https://smartopstech.com/blog-ai-control-systems.html</loc></url>
+<url><loc>https://smartopstech.com/contact.html</loc></url>
+<url><loc>https://smartopstech.com/privacy.html</loc></url>
+<url><loc>https://smartopstech.com/work-process-intelligence.html</loc></url>
+<url><loc>https://smartopstech.com/work-batch-optimisation.html</loc></url>
+<url><loc>https://smartopstech.com/work-smart-maintenance.html</loc></url>
+<url><loc>https://smartopstech.com/work-pybottling.html</loc></url>
 </urlset>
